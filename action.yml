@@ -1,0 +1,20 @@
+name: Github Release Action
+description: >
+  Action for github that allows to create a draft description for a new release
+  containing recent  changes between releases and allows to upload assets from
+  specified directory.
+author: Maciej Szczurek
+
+inputs:
+  repository:
+    description: Repository name
+    default: ${{ github.repository }}
+  token:
+    description: Personal access token
+    default: ${{ github.token }}
+  assets-directory:
+    description: A path to the assets that will be added to the release.
+
+runs:
+  using: node20
+  main: dist/index.js
