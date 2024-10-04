@@ -12,5 +12,10 @@
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2023
+  },
+  "rules": {
+    "camelcase": "off",
+    "github/no-then": "warn",
+    "i18n-text/no-en": "off"
   }
 }
