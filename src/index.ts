@@ -1,14 +1,14 @@
-import * as core from '@actions/core'
-import * as github from '@actions/github'
+import { getInput, info } from '@actions/core'
+import { getOctokit } from '@actions/github'
 import { StatusCodes } from 'http-status-codes'
-import * as fs from 'fs/promises'
-// @ts-ignore
+import { readdir, readFile } from 'fs/promises'
+// @ts-expect-error CommonJS module error
 import mime from 'mime'
 
 async function run(): Promise<void> {
-  const token = core.getInput('token')
-  const octokit = github.getOctokit(token)
-  const [owner, repo] = core.getInput('repository').split('/')
+  const token = getInput('token')
+  const octokit = getOctokit(token)
+  const [owner, repo] = getInput('repository').split('/')
 
   const [latestRelease, tagToRelease] = await Promise.all([
     octokit.rest.repos.getLatestRelease({
@@ -69,41 +69,37 @@ ${commitMessages}`
     tag_name: tagToRelease.name
   })
 
-  core.info(`Created draft release ${release.data.name}`)
+  info(`Created draft release ${release.data.name}`)
 
-  const assetsPath = core.getInput('assets-directory')
+  const assetsPath = getInput('assets-directory')
   if (assetsPath !== '') {
-    core.info('Set up assets directory')
+    info('Set up assets directory')
 
-    fs.readdir(assetsPath, { withFileTypes: true })
-      .then(files => files.filter(file => file.isFile()))
-      .then(files =>
-        files.map(({ name, path }) => {
-          core.info(`Uploading file ${name}`)
-          const { headers, method, url } =
-            octokit.rest.repos.uploadReleaseAsset.endpoint({
-              repo,
-              owner,
-              release_id: release.data.id,
-              name
-            })
-          return fs.readFile(`${path}/${name}`).then(data =>
-            fetch(url, {
-              method,
-              headers: {
-                accept: headers.accept ?? '',
-                'user-agent': headers['user-agent'] ?? '',
-                'content-type':
-                  mime.getType(name) ?? 'application/octet-stream',
-                'content-length': `${data.length}`,
-                authorization: `bearer ${token}`
-              },
-              body: data
-            })
-          )
+    const files = await readdir(assetsPath, { withFileTypes: true })
+    for (const { name, path } of files.filter(file => file.isFile())) {
+      info(`Uploading file ${name}`)
+      const { headers, method, url } =
+        octokit.rest.repos.uploadReleaseAsset.endpoint({
+          repo,
+          owner,
+          release_id: release.data.id,
+          name
         })
-      )
+      const data = await readFile(`${path}/${name}`)
+      await fetch(url, {
+        method,
+        headers: {
+          accept: headers.accept ?? '',
+          'user-agent': headers['user-agent'] ?? '',
+          'content-type': mime.getType(name) ?? 'application/octet-stream',
+          'content-length': `${data.length}`,
+          authorization: `bearer ${token}`
+        },
+        body: data
+      })
+    }
   }
 }
 
-run().then()
+// noinspection JSIgnoredPromiseFromCall
+run()
