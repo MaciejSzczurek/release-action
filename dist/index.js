@@ -30925,43 +30925,20 @@ function wrappy (fn, cb) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(7484));
-const github = __importStar(__nccwpck_require__(3228));
+const core_1 = __nccwpck_require__(7484);
+const github_1 = __nccwpck_require__(3228);
 const http_status_codes_1 = __nccwpck_require__(3268);
-const fs = __importStar(__nccwpck_require__(1943));
-// @ts-ignore
+const promises_1 = __nccwpck_require__(1943);
+// @ts-expect-error CommonJS module error
 const mime_1 = __importDefault(__nccwpck_require__(5086));
 async function run() {
-    const token = core.getInput('token');
-    const octokit = github.getOctokit(token);
-    const [owner, repo] = core.getInput('repository').split('/');
+    const token = (0, core_1.getInput)('token');
+    const octokit = (0, github_1.getOctokit)(token);
+    const [owner, repo] = (0, core_1.getInput)('repository').split('/');
     const [latestRelease, tagToRelease] = await Promise.all([
         octokit.rest.repos.getLatestRelease({
             repo,
@@ -31009,21 +30986,21 @@ ${commitMessages}`);
         draft: true,
         tag_name: tagToRelease.name
     });
-    core.info(`Created draft release ${release.data.name}`);
-    const assetsPath = core.getInput('assets-directory');
+    (0, core_1.info)(`Created draft release ${release.data.name}`);
+    const assetsPath = (0, core_1.getInput)('assets-directory');
     if (assetsPath !== '') {
-        core.info('Set up assets directory');
-        fs.readdir(assetsPath, { withFileTypes: true })
-            .then(files => files.filter(file => file.isFile()))
-            .then(files => files.map(({ name, path }) => {
-            core.info(`Uploading file ${name}`);
+        (0, core_1.info)('Set up assets directory');
+        const files = await (0, promises_1.readdir)(assetsPath, { withFileTypes: true });
+        for (const { name, path } of files.filter(file => file.isFile())) {
+            (0, core_1.info)(`Uploading file ${name}`);
             const { headers, method, url } = octokit.rest.repos.uploadReleaseAsset.endpoint({
                 repo,
                 owner,
                 release_id: release.data.id,
                 name
             });
-            return fs.readFile(`${path}/${name}`).then(data => fetch(url, {
+            const data = await (0, promises_1.readFile)(`${path}/${name}`);
+            await fetch(url, {
                 method,
                 headers: {
                     accept: headers.accept ?? '',
@@ -31033,11 +31010,12 @@ ${commitMessages}`);
                     authorization: `bearer ${token}`
                 },
                 body: data
-            }));
-        }));
+            });
+        }
     }
 }
-run().then();
+// noinspection JSIgnoredPromiseFromCall
+run();
 
 
 /***/ }),
