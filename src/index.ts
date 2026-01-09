@@ -1,8 +1,7 @@
 import { getInput, info } from '@actions/core'
 import { getOctokit } from '@actions/github'
 import { StatusCodes } from 'http-status-codes'
-import { readdir, readFile } from 'fs/promises'
-// @ts-expect-error CommonJS module error
+import { readdir, readFile } from 'node:fs/promises'
 import mime from 'mime'
 
 async function run(): Promise<void> {
@@ -76,7 +75,7 @@ ${commitMessages}`
     info('Set up assets directory')
 
     const files = await readdir(assetsPath, { withFileTypes: true })
-    for (const { name, path } of files.filter(file => file.isFile())) {
+    for (const { name, parentPath } of files.filter(file => file.isFile())) {
       info(`Uploading file ${name}`)
       const { headers, method, url } =
         octokit.rest.repos.uploadReleaseAsset.endpoint({
@@ -85,7 +84,7 @@ ${commitMessages}`
           release_id: release.data.id,
           name
         })
-      const data = await readFile(`${path}/${name}`)
+      const data = await readFile(`${parentPath}/${name}`)
       await fetch(url, {
         method,
         headers: {
