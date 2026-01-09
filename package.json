@@ -1,7 +1,7 @@
 {
   "name": "release-action",
   "description": "GitHub Release action",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Maciej Szczurek",
   "private": false,
   "homepage": "https://github.com/MaciejSzczurek/release-action",

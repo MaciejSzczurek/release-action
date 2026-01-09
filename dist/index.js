@@ -22,36 +22,68 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.issue = exports.issueCommand = void 0;
+exports.issueCommand = issueCommand;
+exports.issue = issue;
 const os = __importStar(__nccwpck_require__(857));
 const utils_1 = __nccwpck_require__(302);
 /**
- * Commands
+ * Issues a command to the GitHub Actions runner
+ *
+ * @param command - The command name to issue
+ * @param properties - Additional properties for the command (key-value pairs)
+ * @param message - The message to include with the command
+ * @remarks
+ * This function outputs a specially formatted string to stdout that the Actions
+ * runner interprets as a command. These commands can control workflow behavior,
+ * set outputs, create annotations, mask values, and more.
  *
  * Command Format:
  *   ::name key=value,key=value::message
  *
- * Examples:
- *   ::warning::This is the message
- *   ::set-env name=MY_VAR::some value
+ * @example
+ * ```typescript
+ * // Issue a warning annotation
+ * issueCommand('warning', {}, 'This is a warning message');
+ * // Output: ::warning::This is a warning message
+ *
+ * // Set an environment variable
+ * issueCommand('set-env', { name: 'MY_VAR' }, 'some value');
+ * // Output: ::set-env name=MY_VAR::some value
+ *
+ * // Add a secret mask
+ * issueCommand('add-mask', {}, 'secretValue123');
+ * // Output: ::add-mask::secretValue123
+ * ```
+ *
+ * @internal
+ * This is an internal utility function that powers the public API functions
+ * such as setSecret, warning, error, and exportVariable.
  */
 function issueCommand(command, properties, message) {
     const cmd = new Command(command, properties, message);
     process.stdout.write(cmd.toString() + os.EOL);
 }
-exports.issueCommand = issueCommand;
 function issue(name, message = '') {
     issueCommand(name, {}, message);
 }
-exports.issue = issue;
 const CMD_STRING = '::';
 class Command {
     constructor(command, properties, message) {
@@ -125,13 +157,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -142,7 +184,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.ExitCode = void 0;
+exports.exportVariable = exportVariable;
+exports.setSecret = setSecret;
+exports.addPath = addPath;
+exports.getInput = getInput;
+exports.getMultilineInput = getMultilineInput;
+exports.getBooleanInput = getBooleanInput;
+exports.setOutput = setOutput;
+exports.setCommandEcho = setCommandEcho;
+exports.setFailed = setFailed;
+exports.isDebug = isDebug;
+exports.debug = debug;
+exports.error = error;
+exports.warning = warning;
+exports.notice = notice;
+exports.info = info;
+exports.startGroup = startGroup;
+exports.endGroup = endGroup;
+exports.group = group;
+exports.saveState = saveState;
+exports.getState = getState;
+exports.getIDToken = getIDToken;
 const command_1 = __nccwpck_require__(4914);
 const file_command_1 = __nccwpck_require__(4753);
 const utils_1 = __nccwpck_require__(302);
@@ -181,15 +244,38 @@ function exportVariable(name, val) {
     }
     (0, command_1.issueCommand)('set-env', { name }, convertedVal);
 }
-exports.exportVariable = exportVariable;
 /**
  * Registers a secret which will get masked from logs
- * @param secret value of the secret
+ *
+ * @param secret - Value of the secret to be masked
+ * @remarks
+ * This function instructs the Actions runner to mask the specified value in any
+ * logs produced during the workflow run. Once registered, the secret value will
+ * be replaced with asterisks (***) whenever it appears in console output, logs,
+ * or error messages.
+ *
+ * This is useful for protecting sensitive information such as:
+ * - API keys
+ * - Access tokens
+ * - Authentication credentials
+ * - URL parameters containing signatures (SAS tokens)
+ *
+ * Note that masking only affects future logs; any previous appearances of the
+ * secret in logs before calling this function will remain unmasked.
+ *
+ * @example
+ * ```typescript
+ * // Register an API token as a secret
+ * const apiToken = "abc123xyz456";
+ * setSecret(apiToken);
+ *
+ * // Now any logs containing this value will show *** instead
+ * console.log(`Using token: ${apiToken}`); // Outputs: "Using token: ***"
+ * ```
  */
 function setSecret(secret) {
     (0, command_1.issueCommand)('add-mask', {}, secret);
 }
-exports.setSecret = setSecret;
 /**
  * Prepends inputPath to the PATH (for this action and future actions)
  * @param inputPath
@@ -204,7 +290,6 @@ function addPath(inputPath) {
     }
     process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
 }
-exports.addPath = addPath;
 /**
  * Gets the value of an input.
  * Unless trimWhitespace is set to false in InputOptions, the value is also trimmed.
@@ -224,7 +309,6 @@ function getInput(name, options) {
     }
     return val.trim();
 }
-exports.getInput = getInput;
 /**
  * Gets the values of an multiline input.  Each value is also trimmed.
  *
@@ -242,7 +326,6 @@ function getMultilineInput(name, options) {
     }
     return inputs.map(input => input.trim());
 }
-exports.getMultilineInput = getMultilineInput;
 /**
  * Gets the input value of the boolean type in the YAML 1.2 "core schema" specification.
  * Support boolean input list: `true | True | TRUE | false | False | FALSE` .
@@ -264,7 +347,6 @@ function getBooleanInput(name, options) {
     throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}\n` +
         `Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
 }
-exports.getBooleanInput = getBooleanInput;
 /**
  * Sets the value of an output.
  *
@@ -280,7 +362,6 @@ function setOutput(name, value) {
     process.stdout.write(os.EOL);
     (0, command_1.issueCommand)('set-output', { name }, (0, utils_1.toCommandValue)(value));
 }
-exports.setOutput = setOutput;
 /**
  * Enables or disables the echoing of commands into stdout for the rest of the step.
  * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
@@ -289,7 +370,6 @@ exports.setOutput = setOutput;
 function setCommandEcho(enabled) {
     (0, command_1.issue)('echo', enabled ? 'on' : 'off');
 }
-exports.setCommandEcho = setCommandEcho;
 //-----------------------------------------------------------------------
 // Results
 //-----------------------------------------------------------------------
@@ -302,7 +382,6 @@ function setFailed(message) {
     process.exitCode = ExitCode.Failure;
     error(message);
 }
-exports.setFailed = setFailed;
 //-----------------------------------------------------------------------
 // Logging Commands
 //-----------------------------------------------------------------------
@@ -312,7 +391,6 @@ exports.setFailed = setFailed;
 function isDebug() {
     return process.env['RUNNER_DEBUG'] === '1';
 }
-exports.isDebug = isDebug;
 /**
  * Writes debug message to user log
  * @param message debug message
@@ -320,7 +398,6 @@ exports.isDebug = isDebug;
 function debug(message) {
     (0, command_1.issueCommand)('debug', {}, message);
 }
-exports.debug = debug;
 /**
  * Adds an error issue
  * @param message error issue message. Errors will be converted to string via toString()
@@ -329,7 +406,6 @@ exports.debug = debug;
 function error(message, properties = {}) {
     (0, command_1.issueCommand)('error', (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
 }
-exports.error = error;
 /**
  * Adds a warning issue
  * @param message warning issue message. Errors will be converted to string via toString()
@@ -338,7 +414,6 @@ exports.error = error;
 function warning(message, properties = {}) {
     (0, command_1.issueCommand)('warning', (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
 }
-exports.warning = warning;
 /**
  * Adds a notice issue
  * @param message notice issue message. Errors will be converted to string via toString()
@@ -347,7 +422,6 @@ exports.warning = warning;
 function notice(message, properties = {}) {
     (0, command_1.issueCommand)('notice', (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
 }
-exports.notice = notice;
 /**
  * Writes info to log with console.log.
  * @param message info message
@@ -355,7 +429,6 @@ exports.notice = notice;
 function info(message) {
     process.stdout.write(message + os.EOL);
 }
-exports.info = info;
 /**
  * Begin an output group.
  *
@@ -366,14 +439,12 @@ exports.info = info;
 function startGroup(name) {
     (0, command_1.issue)('group', name);
 }
-exports.startGroup = startGroup;
 /**
  * End an output group.
  */
 function endGroup() {
     (0, command_1.issue)('endgroup');
 }
-exports.endGroup = endGroup;
 /**
  * Wrap an asynchronous function call in a group.
  *
@@ -395,7 +466,6 @@ function group(name, fn) {
         return result;
     });
 }
-exports.group = group;
 //-----------------------------------------------------------------------
 // Wrapper action state
 //-----------------------------------------------------------------------
@@ -413,7 +483,6 @@ function saveState(name, value) {
     }
     (0, command_1.issueCommand)('save-state', { name }, (0, utils_1.toCommandValue)(value));
 }
-exports.saveState = saveState;
 /**
  * Gets the value of an state set by this action's main execution.
  *
@@ -423,13 +492,11 @@ exports.saveState = saveState;
 function getState(name) {
     return process.env[`STATE_${name}`] || '';
 }
-exports.getState = getState;
 function getIDToken(aud) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield oidc_utils_1.OidcClient.getIDToken(aud);
     });
 }
-exports.getIDToken = getIDToken;
 /**
  * Summary exports
  */
@@ -477,17 +544,29 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
+exports.issueFileCommand = issueFileCommand;
+exports.prepareKeyValueMessage = prepareKeyValueMessage;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
+const crypto = __importStar(__nccwpck_require__(6982));
 const fs = __importStar(__nccwpck_require__(9896));
 const os = __importStar(__nccwpck_require__(857));
 const utils_1 = __nccwpck_require__(302);
@@ -503,7 +582,6 @@ function issueFileCommand(command, message) {
         encoding: 'utf8'
     });
 }
-exports.issueFileCommand = issueFileCommand;
 function prepareKeyValueMessage(key, value) {
     const delimiter = `ghadelimiter_${crypto.randomUUID()}`;
     const convertedValue = (0, utils_1.toCommandValue)(value);
@@ -518,7 +596,6 @@ function prepareKeyValueMessage(key, value) {
     }
     return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
 }
-exports.prepareKeyValueMessage = prepareKeyValueMessage;
 //# sourceMappingURL=file-command.js.map
 
 /***/ }),
@@ -565,8 +642,8 @@ class OidcClient {
         return runtimeUrl;
     }
     static getCall(id_token_url) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const httpclient = OidcClient.createHttpClient();
             const res = yield httpclient
                 .getJson(id_token_url)
@@ -628,15 +705,27 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = void 0;
+exports.toPosixPath = toPosixPath;
+exports.toWin32Path = toWin32Path;
+exports.toPlatformPath = toPlatformPath;
 const path = __importStar(__nccwpck_require__(6928));
 /**
  * toPosixPath converts the given path to the posix form. On Windows, \\ will be
@@ -648,7 +737,6 @@ const path = __importStar(__nccwpck_require__(6928));
 function toPosixPath(pth) {
     return pth.replace(/[\\]/g, '/');
 }
-exports.toPosixPath = toPosixPath;
 /**
  * toWin32Path converts the given path to the win32 form. On Linux, / will be
  * replaced with \\.
@@ -659,7 +747,6 @@ exports.toPosixPath = toPosixPath;
 function toWin32Path(pth) {
     return pth.replace(/[/]/g, '\\');
 }
-exports.toWin32Path = toWin32Path;
 /**
  * toPlatformPath converts the given path to a platform-specific path. It does
  * this by replacing instances of / and \ with the platform-specific path
@@ -671,7 +758,6 @@ exports.toWin32Path = toWin32Path;
 function toPlatformPath(pth) {
     return pth.replace(/[/\\]/g, path.sep);
 }
-exports.toPlatformPath = toPlatformPath;
 //# sourceMappingURL=path-utils.js.map
 
 /***/ }),
@@ -697,13 +783,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -717,7 +813,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
+exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
+exports.getDetails = getDetails;
 const os_1 = __importDefault(__nccwpck_require__(857));
 const exec = __importStar(__nccwpck_require__(5236));
 const getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -772,7 +869,6 @@ function getDetails() {
             isLinux: exports.isLinux });
     });
 }
-exports.getDetails = getDetails;
 //# sourceMappingURL=platform.js.map
 
 /***/ }),
@@ -1075,7 +1171,8 @@ exports.summary = _summary;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toCommandProperties = exports.toCommandValue = void 0;
+exports.toCommandValue = toCommandValue;
+exports.toCommandProperties = toCommandProperties;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -1089,7 +1186,6 @@ function toCommandValue(input) {
     }
     return JSON.stringify(input);
 }
-exports.toCommandValue = toCommandValue;
 /**
  *
  * @param annotationProperties
@@ -1109,7 +1205,6 @@ function toCommandProperties(annotationProperties) {
         endColumn: annotationProperties.endColumn
     };
 }
-exports.toCommandProperties = toCommandProperties;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
@@ -1121,7 +1216,11 @@ exports.toCommandProperties = toCommandProperties;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -1131,13 +1230,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1148,7 +1257,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getExecOutput = exports.exec = void 0;
+exports.exec = exec;
+exports.getExecOutput = getExecOutput;
 const string_decoder_1 = __nccwpck_require__(3193);
 const tr = __importStar(__nccwpck_require__(6665));
 /**
@@ -1174,7 +1284,6 @@ function exec(commandLine, args, options) {
         return runner.exec();
     });
 }
-exports.exec = exec;
 /**
  * Exec a command and get the output.
  * Output will be streamed to the live console.
@@ -1186,8 +1295,8 @@ exports.exec = exec;
  * @returns   Promise<ExecOutput>   exit code, stdout, and stderr
  */
 function getExecOutput(commandLine, args, options) {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         let stdout = '';
         let stderr = '';
         //Using string decoder covers the case where a mult-byte character is split
@@ -1219,7 +1328,6 @@ function getExecOutput(commandLine, args, options) {
         };
     });
 }
-exports.getExecOutput = getExecOutput;
 //# sourceMappingURL=exec.js.map
 
 /***/ }),
@@ -1231,7 +1339,11 @@ exports.getExecOutput = getExecOutput;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -1241,13 +1353,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1258,7 +1380,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.argStringToArray = exports.ToolRunner = void 0;
+exports.ToolRunner = void 0;
+exports.argStringToArray = argStringToArray;
 const os = __importStar(__nccwpck_require__(857));
 const events = __importStar(__nccwpck_require__(4434));
 const child = __importStar(__nccwpck_require__(5317));
@@ -1490,10 +1613,7 @@ class ToolRunner extends events.EventEmitter {
             }
         }
         reverse += '"';
-        return reverse
-            .split('')
-            .reverse()
-            .join('');
+        return reverse.split('').reverse().join('');
     }
     _uvQuoteCmdArg(arg) {
         // Tool runner wraps child_process.spawn() and needs to apply the same quoting as
@@ -1569,10 +1689,7 @@ class ToolRunner extends events.EventEmitter {
             }
         }
         reverse += '"';
-        return reverse
-            .split('')
-            .reverse()
-            .join('');
+        return reverse.split('').reverse().join('');
     }
     _cloneExecOptions(options) {
         options = options || {};
@@ -1776,7 +1893,6 @@ function argStringToArray(argString) {
     }
     return args;
 }
-exports.argStringToArray = argStringToArray;
 class ExecState extends events.EventEmitter {
     constructor(options, toolPath) {
         super();
@@ -1805,7 +1921,7 @@ class ExecState extends events.EventEmitter {
             this._setResult();
         }
         else if (this.processExited) {
-            this.timeout = timers_1.setTimeout(ExecState.HandleTimeout, this.delay, this);
+            this.timeout = (0, timers_1.setTimeout)(ExecState.HandleTimeout, this.delay, this);
         }
     }
     _debug(message) {
@@ -1838,8 +1954,7 @@ class ExecState extends events.EventEmitter {
             return;
         }
         if (!state.processClosed && state.processExited) {
-            const message = `The STDIO streams did not close within ${state.delay /
-                1000} seconds of the exit event from process '${state.toolPath}'. This may indicate a child process inherited the STDIO streams and has not yet exited.`;
+            const message = `The STDIO streams did not close within ${state.delay / 1000} seconds of the exit event from process '${state.toolPath}'. This may indicate a child process inherited the STDIO streams and has not yet exited.`;
             state._debug(message);
         }
         state._setResult();
@@ -1881,6 +1996,7 @@ class Context {
         this.action = process.env.GITHUB_ACTION;
         this.actor = process.env.GITHUB_ACTOR;
         this.job = process.env.GITHUB_JOB;
+        this.runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT, 10);
         this.runNumber = parseInt(process.env.GITHUB_RUN_NUMBER, 10);
         this.runId = parseInt(process.env.GITHUB_RUN_ID, 10);
         this.apiUrl = (_a = process.env.GITHUB_API_URL) !== null && _a !== void 0 ? _a : `https://api.github.com`;
@@ -1932,15 +2048,26 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOctokit = exports.context = void 0;
+exports.context = void 0;
+exports.getOctokit = getOctokit;
 const Context = __importStar(__nccwpck_require__(1648));
 const utils_1 = __nccwpck_require__(8006);
 exports.context = new Context.Context();
@@ -1954,7 +2081,6 @@ function getOctokit(token, options, ...additionalPlugins) {
     const GitHubWithPlugins = utils_1.GitHub.plugin(...additionalPlugins);
     return new GitHubWithPlugins((0, utils_1.getOctokitOptions)(token, options));
 }
-exports.getOctokit = getOctokit;
 //# sourceMappingURL=github.js.map
 
 /***/ }),
@@ -1980,13 +2106,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1997,7 +2133,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getApiBaseUrl = exports.getProxyFetch = exports.getProxyAgentDispatcher = exports.getProxyAgent = exports.getAuthString = void 0;
+exports.getAuthString = getAuthString;
+exports.getProxyAgent = getProxyAgent;
+exports.getProxyAgentDispatcher = getProxyAgentDispatcher;
+exports.getProxyFetch = getProxyFetch;
+exports.getApiBaseUrl = getApiBaseUrl;
 const httpClient = __importStar(__nccwpck_require__(4844));
 const undici_1 = __nccwpck_require__(6752);
 function getAuthString(token, options) {
@@ -2009,17 +2149,14 @@ function getAuthString(token, options) {
     }
     return typeof options.auth === 'string' ? options.auth : `token ${token}`;
 }
-exports.getAuthString = getAuthString;
 function getProxyAgent(destinationUrl) {
     const hc = new httpClient.HttpClient();
     return hc.getAgent(destinationUrl);
 }
-exports.getProxyAgent = getProxyAgent;
 function getProxyAgentDispatcher(destinationUrl) {
     const hc = new httpClient.HttpClient();
     return hc.getAgentDispatcher(destinationUrl);
 }
-exports.getProxyAgentDispatcher = getProxyAgentDispatcher;
 function getProxyFetch(destinationUrl) {
     const httpDispatcher = getProxyAgentDispatcher(destinationUrl);
     const proxyFetch = (url, opts) => __awaiter(this, void 0, void 0, function* () {
@@ -2027,11 +2164,9 @@ function getProxyFetch(destinationUrl) {
     });
     return proxyFetch;
 }
-exports.getProxyFetch = getProxyFetch;
 function getApiBaseUrl() {
     return process.env['GITHUB_API_URL'] || 'https://api.github.com';
 }
-exports.getApiBaseUrl = getApiBaseUrl;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
@@ -2057,15 +2192,26 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOctokitOptions = exports.GitHub = exports.defaults = exports.context = void 0;
+exports.GitHub = exports.defaults = exports.context = void 0;
+exports.getOctokitOptions = getOctokitOptions;
 const Context = __importStar(__nccwpck_require__(1648));
 const Utils = __importStar(__nccwpck_require__(5156));
 // octokit + plugins
@@ -2097,7 +2243,6 @@ function getOctokitOptions(token, options) {
     }
     return opts;
 }
-exports.getOctokitOptions = getOctokitOptions;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
@@ -2212,13 +2357,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2229,7 +2384,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.HttpClient = exports.isHttps = exports.HttpClientResponse = exports.HttpClientError = exports.getProxyUrl = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
+exports.HttpClient = exports.HttpClientResponse = exports.HttpClientError = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
+exports.getProxyUrl = getProxyUrl;
+exports.isHttps = isHttps;
 const http = __importStar(__nccwpck_require__(8611));
 const https = __importStar(__nccwpck_require__(5692));
 const pm = __importStar(__nccwpck_require__(4988));
@@ -2282,7 +2439,6 @@ function getProxyUrl(serverUrl) {
     const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
     return proxyUrl ? proxyUrl.href : '';
 }
-exports.getProxyUrl = getProxyUrl;
 const HttpRedirectCodes = [
     HttpCodes.MovedPermanently,
     HttpCodes.ResourceMoved,
@@ -2343,7 +2499,6 @@ function isHttps(requestUrl) {
     const parsedUrl = new URL(requestUrl);
     return parsedUrl.protocol === 'https:';
 }
-exports.isHttps = isHttps;
 class HttpClient {
     constructor(userAgent, handlers, requestOptions) {
         this._ignoreSslError = false;
@@ -2354,7 +2509,7 @@ class HttpClient {
         this._maxRetries = 1;
         this._keepAlive = false;
         this._disposed = false;
-        this.userAgent = userAgent;
+        this.userAgent = this._getUserAgentWithOrchestrationId(userAgent);
         this.handlers = handlers || [];
         this.requestOptions = requestOptions;
         if (requestOptions) {
@@ -2426,36 +2581,39 @@ class HttpClient {
      * Gets a typed object from an endpoint
      * Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
      */
-    getJson(requestUrl, additionalHeaders = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+    getJson(requestUrl_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
             additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
             const res = yield this.get(requestUrl, additionalHeaders);
             return this._processResponse(res, this.requestOptions);
         });
     }
-    postJson(requestUrl, obj, additionalHeaders = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+    postJson(requestUrl_1, obj_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
             const data = JSON.stringify(obj, null, 2);
             additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-            additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.ContentType, MediaTypes.ApplicationJson);
+            additionalHeaders[Headers.ContentType] =
+                this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
             const res = yield this.post(requestUrl, data, additionalHeaders);
             return this._processResponse(res, this.requestOptions);
         });
     }
-    putJson(requestUrl, obj, additionalHeaders = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+    putJson(requestUrl_1, obj_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
             const data = JSON.stringify(obj, null, 2);
             additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-            additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.ContentType, MediaTypes.ApplicationJson);
+            additionalHeaders[Headers.ContentType] =
+                this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
             const res = yield this.put(requestUrl, data, additionalHeaders);
             return this._processResponse(res, this.requestOptions);
         });
     }
-    patchJson(requestUrl, obj, additionalHeaders = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+    patchJson(requestUrl_1, obj_1) {
+        return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
             const data = JSON.stringify(obj, null, 2);
             additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-            additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.ContentType, MediaTypes.ApplicationJson);
+            additionalHeaders[Headers.ContentType] =
+                this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
             const res = yield this.patch(requestUrl, data, additionalHeaders);
             return this._processResponse(res, this.requestOptions);
         });
@@ -2684,12 +2842,73 @@ class HttpClient {
         }
         return lowercaseKeys(headers || {});
     }
+    /**
+     * Gets an existing header value or returns a default.
+     * Handles converting number header values to strings since HTTP headers must be strings.
+     * Note: This returns string | string[] since some headers can have multiple values.
+     * For headers that must always be a single string (like Content-Type), use the
+     * specialized _getExistingOrDefaultContentTypeHeader method instead.
+     */
     _getExistingOrDefaultHeader(additionalHeaders, header, _default) {
         let clientHeader;
         if (this.requestOptions && this.requestOptions.headers) {
-            clientHeader = lowercaseKeys(this.requestOptions.headers)[header];
+            const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
+            if (headerValue) {
+                clientHeader =
+                    typeof headerValue === 'number' ? headerValue.toString() : headerValue;
+            }
         }
-        return additionalHeaders[header] || clientHeader || _default;
+        const additionalValue = additionalHeaders[header];
+        if (additionalValue !== undefined) {
+            return typeof additionalValue === 'number'
+                ? additionalValue.toString()
+                : additionalValue;
+        }
+        if (clientHeader !== undefined) {
+            return clientHeader;
+        }
+        return _default;
+    }
+    /**
+     * Specialized version of _getExistingOrDefaultHeader for Content-Type header.
+     * Always returns a single string (not an array) since Content-Type should be a single value.
+     * Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
+     * This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
+     * that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
+     */
+    _getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
+        let clientHeader;
+        if (this.requestOptions && this.requestOptions.headers) {
+            const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
+            if (headerValue) {
+                if (typeof headerValue === 'number') {
+                    clientHeader = String(headerValue);
+                }
+                else if (Array.isArray(headerValue)) {
+                    clientHeader = headerValue.join(', ');
+                }
+                else {
+                    clientHeader = headerValue;
+                }
+            }
+        }
+        const additionalValue = additionalHeaders[Headers.ContentType];
+        // Return the first non-undefined value, converting numbers or arrays to strings if necessary
+        if (additionalValue !== undefined) {
+            if (typeof additionalValue === 'number') {
+                return String(additionalValue);
+            }
+            else if (Array.isArray(additionalValue)) {
+                return additionalValue.join(', ');
+            }
+            else {
+                return additionalValue;
+            }
+        }
+        if (clientHeader !== undefined) {
+            return clientHeader;
+        }
+        return _default;
     }
     _getAgent(parsedUrl) {
         let agent;
@@ -2698,7 +2917,7 @@ class HttpClient {
         if (this._keepAlive && useProxy) {
             agent = this._proxyAgent;
         }
-        if (this._keepAlive && !useProxy) {
+        if (!useProxy) {
             agent = this._agent;
         }
         // if agent is already assigned use that agent.
@@ -2730,15 +2949,11 @@ class HttpClient {
             agent = tunnelAgent(agentOptions);
             this._proxyAgent = agent;
         }
-        // if reusing agent across request and tunneling agent isn't assigned create a new agent
-        if (this._keepAlive && !agent) {
+        // if tunneling agent isn't assigned create a new agent
+        if (!agent) {
             const options = { keepAlive: this._keepAlive, maxSockets };
             agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
             this._agent = agent;
-        }
-        // if not using private agent and tunnel agent isn't setup then use global agent
-        if (!agent) {
-            agent = usingSsl ? https.globalAgent : http.globalAgent;
         }
         if (usingSsl && this._ignoreSslError) {
             // we don't want to set NODE_TLS_REJECT_UNAUTHORIZED=0 since that will affect request for entire process
@@ -2761,7 +2976,7 @@ class HttpClient {
         }
         const usingSsl = parsedUrl.protocol === 'https:';
         proxyAgent = new undici_1.ProxyAgent(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, ((proxyUrl.username || proxyUrl.password) && {
-            token: `${proxyUrl.username}:${proxyUrl.password}`
+            token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString('base64')}`
         })));
         this._proxyAgentDispatcher = proxyAgent;
         if (usingSsl && this._ignoreSslError) {
@@ -2773,6 +2988,17 @@ class HttpClient {
             });
         }
         return proxyAgent;
+    }
+    _getUserAgentWithOrchestrationId(userAgent) {
+        const baseUserAgent = userAgent || 'actions/http-client';
+        const orchId = process.env['ACTIONS_ORCHESTRATION_ID'];
+        if (orchId) {
+            // Sanitize the orchestration ID to ensure it contains only valid characters
+            // Valid characters: 0-9, a-z, _, -, .
+            const sanitizedId = orchId.replace(/[^a-z0-9_.-]/gi, '_');
+            return `${baseUserAgent} actions_orchestration_id/${sanitizedId}`;
+        }
+        return baseUserAgent;
     }
     _performExponentialBackoff(retryNumber) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2859,7 +3085,8 @@ const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCa
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.checkBypass = exports.getProxyUrl = void 0;
+exports.getProxyUrl = getProxyUrl;
+exports.checkBypass = checkBypass;
 function getProxyUrl(reqUrl) {
     const usingSsl = reqUrl.protocol === 'https:';
     if (checkBypass(reqUrl)) {
@@ -2875,18 +3102,17 @@ function getProxyUrl(reqUrl) {
     })();
     if (proxyVar) {
         try {
-            return new URL(proxyVar);
+            return new DecodedURL(proxyVar);
         }
         catch (_a) {
             if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://'))
-                return new URL(`http://${proxyVar}`);
+                return new DecodedURL(`http://${proxyVar}`);
         }
     }
     else {
         return undefined;
     }
 }
-exports.getProxyUrl = getProxyUrl;
 function checkBypass(reqUrl) {
     if (!reqUrl.hostname) {
         return false;
@@ -2930,13 +3156,25 @@ function checkBypass(reqUrl) {
     }
     return false;
 }
-exports.checkBypass = checkBypass;
 function isLoopbackAddress(host) {
     const hostLower = host.toLowerCase();
     return (hostLower === 'localhost' ||
         hostLower.startsWith('127.') ||
         hostLower.startsWith('[::1]') ||
         hostLower.startsWith('[0:0:0:0:0:0:0:1]'));
+}
+class DecodedURL extends URL {
+    constructor(url, base) {
+        super(url, base);
+        this._decodedUsername = decodeURIComponent(super.username);
+        this._decodedPassword = decodeURIComponent(super.password);
+    }
+    get username() {
+        return this._decodedUsername;
+    }
+    get password() {
+        return this._decodedPassword;
+    }
 }
 //# sourceMappingURL=proxy.js.map
 
@@ -2949,7 +3187,11 @@ function isLoopbackAddress(host) {
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -2959,13 +3201,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2977,21 +3229,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+exports.readlink = readlink;
+exports.exists = exists;
+exports.isDirectory = isDirectory;
+exports.isRooted = isRooted;
+exports.tryGetExecutablePath = tryGetExecutablePath;
+exports.getCmdPath = getCmdPath;
 const fs = __importStar(__nccwpck_require__(9896));
 const path = __importStar(__nccwpck_require__(6928));
 _a = fs.promises
 // export const {open} = 'fs'
-, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
+, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
 // export const {open} = 'fs'
 exports.IS_WINDOWS = process.platform === 'win32';
+/**
+ * Custom implementation of readlink to ensure Windows junctions
+ * maintain trailing backslash for backward compatibility with Node.js < 24
+ *
+ * In Node.js 20, Windows junctions (directory symlinks) always returned paths
+ * with trailing backslashes. Node.js 24 removed this behavior, which breaks
+ * code that relied on this format for path operations.
+ *
+ * This implementation restores the Node 20 behavior by adding a trailing
+ * backslash to all junction results on Windows.
+ */
+function readlink(fsPath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield fs.promises.readlink(fsPath);
+        // On Windows, restore Node 20 behavior: add trailing backslash to all results
+        // since junctions on Windows are always directory links
+        if (exports.IS_WINDOWS && !result.endsWith('\\')) {
+            return `${result}\\`;
+        }
+        return result;
+    });
+}
 // See https://github.com/nodejs/node/blob/d0153aee367422d0858105abec186da4dff0a0c5/deps/uv/include/uv/win.h#L691
 exports.UV_FS_O_EXLOCK = 0x10000000;
 exports.READONLY = fs.constants.O_RDONLY;
 function exists(fsPath) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield exports.stat(fsPath);
+            yield (0, exports.stat)(fsPath);
         }
         catch (err) {
             if (err.code === 'ENOENT') {
@@ -3002,14 +3282,12 @@ function exists(fsPath) {
         return true;
     });
 }
-exports.exists = exists;
-function isDirectory(fsPath, useStat = false) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const stats = useStat ? yield exports.stat(fsPath) : yield exports.lstat(fsPath);
+function isDirectory(fsPath_1) {
+    return __awaiter(this, arguments, void 0, function* (fsPath, useStat = false) {
+        const stats = useStat ? yield (0, exports.stat)(fsPath) : yield (0, exports.lstat)(fsPath);
         return stats.isDirectory();
     });
 }
-exports.isDirectory = isDirectory;
 /**
  * On OSX/Linux, true if path starts with '/'. On Windows, true for paths like:
  * \, \hello, \\hello\share, C:, and C:\hello (and corresponding alternate separator cases).
@@ -3025,7 +3303,6 @@ function isRooted(p) {
     }
     return p.startsWith('/');
 }
-exports.isRooted = isRooted;
 /**
  * Best effort attempt to determine whether a file exists and is executable.
  * @param filePath    file path to check
@@ -3037,7 +3314,7 @@ function tryGetExecutablePath(filePath, extensions) {
         let stats = undefined;
         try {
             // test file exists
-            stats = yield exports.stat(filePath);
+            stats = yield (0, exports.stat)(filePath);
         }
         catch (err) {
             if (err.code !== 'ENOENT') {
@@ -3065,7 +3342,7 @@ function tryGetExecutablePath(filePath, extensions) {
             filePath = originalFilePath + extension;
             stats = undefined;
             try {
-                stats = yield exports.stat(filePath);
+                stats = yield (0, exports.stat)(filePath);
             }
             catch (err) {
                 if (err.code !== 'ENOENT') {
@@ -3079,7 +3356,7 @@ function tryGetExecutablePath(filePath, extensions) {
                     try {
                         const directory = path.dirname(filePath);
                         const upperName = path.basename(filePath).toUpperCase();
-                        for (const actualName of yield exports.readdir(directory)) {
+                        for (const actualName of yield (0, exports.readdir)(directory)) {
                             if (upperName === actualName.toUpperCase()) {
                                 filePath = path.join(directory, actualName);
                                 break;
@@ -3102,7 +3379,6 @@ function tryGetExecutablePath(filePath, extensions) {
         return '';
     });
 }
-exports.tryGetExecutablePath = tryGetExecutablePath;
 function normalizeSeparators(p) {
     p = p || '';
     if (exports.IS_WINDOWS) {
@@ -3119,15 +3395,18 @@ function normalizeSeparators(p) {
 //   256 128 64 32 16 8 4 2 1
 function isUnixExecutable(stats) {
     return ((stats.mode & 1) > 0 ||
-        ((stats.mode & 8) > 0 && stats.gid === process.getgid()) ||
-        ((stats.mode & 64) > 0 && stats.uid === process.getuid()));
+        ((stats.mode & 8) > 0 &&
+            process.getgid !== undefined &&
+            stats.gid === process.getgid()) ||
+        ((stats.mode & 64) > 0 &&
+            process.getuid !== undefined &&
+            stats.uid === process.getuid()));
 }
 // Get the path of cmd.exe in windows
 function getCmdPath() {
     var _a;
     return (_a = process.env['COMSPEC']) !== null && _a !== void 0 ? _a : `cmd.exe`;
 }
-exports.getCmdPath = getCmdPath;
 //# sourceMappingURL=io-util.js.map
 
 /***/ }),
@@ -3139,7 +3418,11 @@ exports.getCmdPath = getCmdPath;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -3149,13 +3432,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3166,7 +3459,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.findInPath = exports.which = exports.mkdirP = exports.rmRF = exports.mv = exports.cp = void 0;
+exports.cp = cp;
+exports.mv = mv;
+exports.rmRF = rmRF;
+exports.mkdirP = mkdirP;
+exports.which = which;
+exports.findInPath = findInPath;
 const assert_1 = __nccwpck_require__(2613);
 const path = __importStar(__nccwpck_require__(6928));
 const ioUtil = __importStar(__nccwpck_require__(5207));
@@ -3178,8 +3476,8 @@ const ioUtil = __importStar(__nccwpck_require__(5207));
  * @param     dest      destination path
  * @param     options   optional. See CopyOptions.
  */
-function cp(source, dest, options = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
+function cp(source_1, dest_1) {
+    return __awaiter(this, arguments, void 0, function* (source, dest, options = {}) {
         const { force, recursive, copySourceDirectory } = readCopyOptions(options);
         const destStat = (yield ioUtil.exists(dest)) ? yield ioUtil.stat(dest) : null;
         // Dest is an existing file, but not forcing
@@ -3211,7 +3509,6 @@ function cp(source, dest, options = {}) {
         }
     });
 }
-exports.cp = cp;
 /**
  * Moves a path.
  *
@@ -3219,8 +3516,8 @@ exports.cp = cp;
  * @param     dest      destination path
  * @param     options   optional. See MoveOptions.
  */
-function mv(source, dest, options = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
+function mv(source_1, dest_1) {
+    return __awaiter(this, arguments, void 0, function* (source, dest, options = {}) {
         if (yield ioUtil.exists(dest)) {
             let destExists = true;
             if (yield ioUtil.isDirectory(dest)) {
@@ -3241,7 +3538,6 @@ function mv(source, dest, options = {}) {
         yield ioUtil.rename(source, dest);
     });
 }
-exports.mv = mv;
 /**
  * Remove a path recursively with force
  *
@@ -3270,7 +3566,6 @@ function rmRF(inputPath) {
         }
     });
 }
-exports.rmRF = rmRF;
 /**
  * Make a directory.  Creates the full path with folders in between
  * Will throw if it fails
@@ -3280,11 +3575,10 @@ exports.rmRF = rmRF;
  */
 function mkdirP(fsPath) {
     return __awaiter(this, void 0, void 0, function* () {
-        assert_1.ok(fsPath, 'a path argument must be provided');
+        (0, assert_1.ok)(fsPath, 'a path argument must be provided');
         yield ioUtil.mkdir(fsPath, { recursive: true });
     });
 }
-exports.mkdirP = mkdirP;
 /**
  * Returns path of a tool had the tool actually been invoked.  Resolves via paths.
  * If you check and the tool does not exist, it will throw.
@@ -3318,7 +3612,6 @@ function which(tool, check) {
         return '';
     });
 }
-exports.which = which;
 /**
  * Returns a list of all occurrences of the given tool on the system path.
  *
@@ -3375,7 +3668,6 @@ function findInPath(tool) {
         return matches;
     });
 }
-exports.findInPath = findInPath;
 function readCopyOptions(options) {
     const force = options.force == null ? true : options.force;
     const recursive = Boolean(options.recursive);
@@ -3547,11 +3839,11 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // pkg/dist-src/index.js
-var dist_src_exports = {};
-__export(dist_src_exports, {
+var index_exports = {};
+__export(index_exports, {
   Octokit: () => Octokit
 });
-module.exports = __toCommonJS(dist_src_exports);
+module.exports = __toCommonJS(index_exports);
 var import_universal_user_agent = __nccwpck_require__(3843);
 var import_before_after_hook = __nccwpck_require__(2732);
 var import_request = __nccwpck_require__(8636);
@@ -3559,13 +3851,28 @@ var import_graphql = __nccwpck_require__(7);
 var import_auth_token = __nccwpck_require__(7864);
 
 // pkg/dist-src/version.js
-var VERSION = "5.1.0";
+var VERSION = "5.2.2";
 
 // pkg/dist-src/index.js
 var noop = () => {
 };
 var consoleWarn = console.warn.bind(console);
 var consoleError = console.error.bind(console);
+function createLogger(logger = {}) {
+  if (typeof logger.debug !== "function") {
+    logger.debug = noop;
+  }
+  if (typeof logger.info !== "function") {
+    logger.info = noop;
+  }
+  if (typeof logger.warn !== "function") {
+    logger.warn = consoleWarn;
+  }
+  if (typeof logger.error !== "function") {
+    logger.error = consoleError;
+  }
+  return logger;
+}
 var userAgentTrail = `octokit-core.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`;
 var Octokit = class {
   static {
@@ -3639,15 +3946,7 @@ var Octokit = class {
     }
     this.request = import_request.request.defaults(requestDefaults);
     this.graphql = (0, import_graphql.withCustomRequest)(this.request).defaults(requestDefaults);
-    this.log = Object.assign(
-      {
-        debug: noop,
-        info: noop,
-        warn: consoleWarn,
-        error: consoleError
-      },
-      options.log
-    );
+    this.log = createLogger(options.log);
     this.hook = hook;
     if (!options.authStrategy) {
       if (!options.auth) {
@@ -3726,7 +4025,7 @@ module.exports = __toCommonJS(dist_src_exports);
 var import_universal_user_agent = __nccwpck_require__(3843);
 
 // pkg/dist-src/version.js
-var VERSION = "9.0.4";
+var VERSION = "9.0.6";
 
 // pkg/dist-src/defaults.js
 var userAgent = `octokit-endpoint.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`;
@@ -3831,9 +4130,9 @@ function addQueryParameters(url, parameters) {
 }
 
 // pkg/dist-src/util/extract-url-variable-names.js
-var urlVariableRegex = /\{[^}]+\}/g;
+var urlVariableRegex = /\{[^{}}]+\}/g;
 function removeNonChars(variableName) {
-  return variableName.replace(/^\W+|\W+$/g, "").split(/,/);
+  return variableName.replace(/(?:^\W+)|(?:(?<!\W)\W+$)/g, "").split(/,/);
 }
 function extractUrlVariableNames(url) {
   const matches = url.match(urlVariableRegex);
@@ -4019,7 +4318,7 @@ function parse(options) {
     }
     if (url.endsWith("/graphql")) {
       if (options.mediaType.previews?.length) {
-        const previewsFromAcceptHeader = headers.accept.match(/[\w-]+(?=-preview)/g) || [];
+        const previewsFromAcceptHeader = headers.accept.match(/(?<![\w-])[\w-]+(?=-preview)/g) || [];
         headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map((preview) => {
           const format = options.mediaType.format ? `.${options.mediaType.format}` : "+json";
           return `application/vnd.github.${preview}-preview${format}`;
@@ -4100,18 +4399,18 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // pkg/dist-src/index.js
-var dist_src_exports = {};
-__export(dist_src_exports, {
+var index_exports = {};
+__export(index_exports, {
   GraphqlResponseError: () => GraphqlResponseError,
   graphql: () => graphql2,
   withCustomRequest: () => withCustomRequest
 });
-module.exports = __toCommonJS(dist_src_exports);
+module.exports = __toCommonJS(index_exports);
 var import_request3 = __nccwpck_require__(8636);
 var import_universal_user_agent = __nccwpck_require__(3843);
 
 // pkg/dist-src/version.js
-var VERSION = "7.0.2";
+var VERSION = "7.1.1";
 
 // pkg/dist-src/with-defaults.js
 var import_request2 = __nccwpck_require__(8636);
@@ -4159,8 +4458,7 @@ function graphql(request2, query, options) {
       );
     }
     for (const key in options) {
-      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key))
-        continue;
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
       return Promise.reject(
         new Error(
           `[@octokit/graphql] "${key}" cannot be used as variable name`
@@ -4268,7 +4566,7 @@ __export(dist_src_exports, {
 module.exports = __toCommonJS(dist_src_exports);
 
 // pkg/dist-src/version.js
-var VERSION = "9.1.5";
+var VERSION = "9.2.2";
 
 // pkg/dist-src/normalize-paginated-list-response.js
 function normalizePaginatedListResponse(response) {
@@ -4316,7 +4614,7 @@ function iterator(octokit, route, parameters) {
           const response = await requestMethod({ method, url, headers });
           const normalizedResponse = normalizePaginatedListResponse(response);
           url = ((normalizedResponse.headers.link || "").match(
-            /<([^>]+)>;\s*rel="next"/
+            /<([^<>]+)>;\s*rel="next"/
           ) || [])[1];
           return { value: normalizedResponse };
         } catch (error) {
@@ -4429,6 +4727,8 @@ var paginatingEndpoints = [
   "GET /orgs/{org}/members/{username}/codespaces",
   "GET /orgs/{org}/migrations",
   "GET /orgs/{org}/migrations/{migration_id}/repositories",
+  "GET /orgs/{org}/organization-roles/{role_id}/teams",
+  "GET /orgs/{org}/organization-roles/{role_id}/users",
   "GET /orgs/{org}/outside_collaborators",
   "GET /orgs/{org}/packages",
   "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
@@ -4665,7 +4965,7 @@ __export(dist_src_exports, {
 module.exports = __toCommonJS(dist_src_exports);
 
 // pkg/dist-src/version.js
-var VERSION = "10.2.0";
+var VERSION = "10.4.1";
 
 // pkg/dist-src/generated/endpoints.js
 var Endpoints = {
@@ -4792,6 +5092,9 @@ var Endpoints = {
       "GET /repos/{owner}/{repo}/actions/permissions/selected-actions"
     ],
     getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    getCustomOidcSubClaimForRepo: [
+      "GET /repos/{owner}/{repo}/actions/oidc/customization/sub"
+    ],
     getEnvironmentPublicKey: [
       "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"
     ],
@@ -4944,6 +5247,9 @@ var Endpoints = {
     setCustomLabelsForSelfHostedRunnerForRepo: [
       "PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
     ],
+    setCustomOidcSubClaimForRepo: [
+      "PUT /repos/{owner}/{repo}/actions/oidc/customization/sub"
+    ],
     setGithubActionsDefaultWorkflowPermissionsOrganization: [
       "PUT /orgs/{org}/actions/permissions/workflow"
     ],
@@ -5013,6 +5319,7 @@ var Endpoints = {
     listWatchersForRepo: ["GET /repos/{owner}/{repo}/subscribers"],
     markNotificationsAsRead: ["PUT /notifications"],
     markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
+    markThreadAsDone: ["DELETE /notifications/threads/{thread_id}"],
     markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
     setRepoSubscription: ["PUT /repos/{owner}/{repo}/subscription"],
     setThreadSubscription: [
@@ -5289,10 +5596,10 @@ var Endpoints = {
     updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
   },
   copilot: {
-    addCopilotForBusinessSeatsForTeams: [
+    addCopilotSeatsForTeams: [
       "POST /orgs/{org}/copilot/billing/selected_teams"
     ],
-    addCopilotForBusinessSeatsForUsers: [
+    addCopilotSeatsForUsers: [
       "POST /orgs/{org}/copilot/billing/selected_users"
     ],
     cancelCopilotSeatAssignmentForTeams: [
@@ -5605,9 +5912,23 @@ var Endpoints = {
       }
     ]
   },
+  oidc: {
+    getOidcCustomSubTemplateForOrg: [
+      "GET /orgs/{org}/actions/oidc/customization/sub"
+    ],
+    updateOidcCustomSubTemplateForOrg: [
+      "PUT /orgs/{org}/actions/oidc/customization/sub"
+    ]
+  },
   orgs: {
     addSecurityManagerTeam: [
       "PUT /orgs/{org}/security-managers/teams/{team_slug}"
+    ],
+    assignTeamToOrgRole: [
+      "PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+    ],
+    assignUserToOrgRole: [
+      "PUT /orgs/{org}/organization-roles/users/{username}/{role_id}"
     ],
     blockUser: ["PUT /orgs/{org}/blocks/{username}"],
     cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
@@ -5617,6 +5938,7 @@ var Endpoints = {
     convertMemberToOutsideCollaborator: [
       "PUT /orgs/{org}/outside_collaborators/{username}"
     ],
+    createCustomOrganizationRole: ["POST /orgs/{org}/organization-roles"],
     createInvitation: ["POST /orgs/{org}/invitations"],
     createOrUpdateCustomProperties: ["PATCH /orgs/{org}/properties/schema"],
     createOrUpdateCustomPropertiesValuesForRepos: [
@@ -5627,6 +5949,9 @@ var Endpoints = {
     ],
     createWebhook: ["POST /orgs/{org}/hooks"],
     delete: ["DELETE /orgs/{org}"],
+    deleteCustomOrganizationRole: [
+      "DELETE /orgs/{org}/organization-roles/{role_id}"
+    ],
     deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
     enableOrDisableSecurityProductOnAllOrgRepos: [
       "POST /orgs/{org}/{security_product}/{enablement}"
@@ -5638,6 +5963,7 @@ var Endpoints = {
     ],
     getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
     getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
+    getOrgRole: ["GET /orgs/{org}/organization-roles/{role_id}"],
     getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
     getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
     getWebhookDelivery: [
@@ -5653,6 +5979,12 @@ var Endpoints = {
     listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
     listMembers: ["GET /orgs/{org}/members"],
     listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
+    listOrgRoleTeams: ["GET /orgs/{org}/organization-roles/{role_id}/teams"],
+    listOrgRoleUsers: ["GET /orgs/{org}/organization-roles/{role_id}/users"],
+    listOrgRoles: ["GET /orgs/{org}/organization-roles"],
+    listOrganizationFineGrainedPermissions: [
+      "GET /orgs/{org}/organization-fine-grained-permissions"
+    ],
     listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
     listPatGrantRepositories: [
       "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories"
@@ -5667,6 +5999,9 @@ var Endpoints = {
     listSecurityManagerTeams: ["GET /orgs/{org}/security-managers"],
     listWebhookDeliveries: ["GET /orgs/{org}/hooks/{hook_id}/deliveries"],
     listWebhooks: ["GET /orgs/{org}/hooks"],
+    patchCustomOrganizationRole: [
+      "PATCH /orgs/{org}/organization-roles/{role_id}"
+    ],
     pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
     redeliverWebhookDelivery: [
       "POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"
@@ -5690,6 +6025,18 @@ var Endpoints = {
     ],
     reviewPatGrantRequestsInBulk: [
       "POST /orgs/{org}/personal-access-token-requests"
+    ],
+    revokeAllOrgRolesTeam: [
+      "DELETE /orgs/{org}/organization-roles/teams/{team_slug}"
+    ],
+    revokeAllOrgRolesUser: [
+      "DELETE /orgs/{org}/organization-roles/users/{username}"
+    ],
+    revokeOrgRoleTeam: [
+      "DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+    ],
+    revokeOrgRoleUser: [
+      "DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}"
     ],
     setMembershipForUser: ["PUT /orgs/{org}/memberships/{username}"],
     setPublicMembershipForAuthenticatedUser: [
@@ -5981,6 +6328,9 @@ var Endpoints = {
       {},
       { mapToData: "users" }
     ],
+    cancelPagesDeployment: [
+      "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
+    ],
     checkAutomatedSecurityFixes: [
       "GET /repos/{owner}/{repo}/automated-security-fixes"
     ],
@@ -6016,12 +6366,15 @@ var Endpoints = {
     createForAuthenticatedUser: ["POST /user/repos"],
     createFork: ["POST /repos/{owner}/{repo}/forks"],
     createInOrg: ["POST /orgs/{org}/repos"],
+    createOrUpdateCustomPropertiesValues: [
+      "PATCH /repos/{owner}/{repo}/properties/values"
+    ],
     createOrUpdateEnvironment: [
       "PUT /repos/{owner}/{repo}/environments/{environment_name}"
     ],
     createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
     createOrgRuleset: ["POST /orgs/{org}/rulesets"],
-    createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployment"],
+    createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployments"],
     createPagesSite: ["POST /repos/{owner}/{repo}/pages"],
     createRelease: ["POST /repos/{owner}/{repo}/releases"],
     createRepoRuleset: ["POST /repos/{owner}/{repo}/rulesets"],
@@ -6174,6 +6527,9 @@ var Endpoints = {
     getOrgRulesets: ["GET /orgs/{org}/rulesets"],
     getPages: ["GET /repos/{owner}/{repo}/pages"],
     getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
+    getPagesDeployment: [
+      "GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+    ],
     getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
     getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
     getPullRequestReviewProtection: [
@@ -6384,6 +6740,9 @@ var Endpoints = {
     ]
   },
   securityAdvisories: {
+    createFork: [
+      "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+    ],
     createPrivateVulnerabilityReport: [
       "POST /repos/{owner}/{repo}/security-advisories/reports"
     ],
@@ -6807,7 +7166,7 @@ var RequestError = class extends Error {
     if (options.request.headers.authorization) {
       requestCopy.headers = Object.assign({}, options.request.headers, {
         authorization: options.request.headers.authorization.replace(
-          / .*$/,
+          /(?<! ) .*$/,
           " [REDACTED]"
         )
       });
@@ -6875,7 +7234,7 @@ var import_endpoint = __nccwpck_require__(4471);
 var import_universal_user_agent = __nccwpck_require__(3843);
 
 // pkg/dist-src/version.js
-var VERSION = "8.1.6";
+var VERSION = "8.4.1";
 
 // pkg/dist-src/is-plain-object.js
 function isPlainObject(value) {
@@ -6900,7 +7259,7 @@ function getBufferResponse(response) {
 
 // pkg/dist-src/fetch-wrapper.js
 function fetchWrapper(requestOptions) {
-  var _a, _b, _c;
+  var _a, _b, _c, _d;
   const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
   const parseSuccessResponseBody = ((_a = requestOptions.request) == null ? void 0 : _a.parseSuccessResponseBody) !== false;
   if (isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
@@ -6921,8 +7280,9 @@ function fetchWrapper(requestOptions) {
   return fetch(requestOptions.url, {
     method: requestOptions.method,
     body: requestOptions.body,
+    redirect: (_c = requestOptions.request) == null ? void 0 : _c.redirect,
     headers: requestOptions.headers,
-    signal: (_c = requestOptions.request) == null ? void 0 : _c.signal,
+    signal: (_d = requestOptions.request) == null ? void 0 : _d.signal,
     // duplex must be set if request.body is ReadableStream or Async Iterables.
     // See https://fetch.spec.whatwg.org/#dom-requestinit-duplex.
     ...requestOptions.body && { duplex: "half" }
@@ -6933,7 +7293,7 @@ function fetchWrapper(requestOptions) {
       headers[keyAndValue[0]] = keyAndValue[1];
     }
     if ("deprecation" in headers) {
-      const matches = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
+      const matches = headers.link && headers.link.match(/<([^<>]+)>; rel="deprecation"/);
       const deprecationLink = matches && matches.pop();
       log.warn(
         `[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`
@@ -7019,11 +7379,17 @@ async function getResponseData(response) {
 function toErrorMessage(data) {
   if (typeof data === "string")
     return data;
+  let suffix;
+  if ("documentation_url" in data) {
+    suffix = ` - ${data.documentation_url}`;
+  } else {
+    suffix = "";
+  }
   if ("message" in data) {
     if (Array.isArray(data.errors)) {
-      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}${suffix}`;
     }
-    return data.message;
+    return `${data.message}${suffix}`;
   }
   return `Unknown error: ${JSON.stringify(data)}`;
 }
@@ -14240,7 +14606,7 @@ module.exports = {
 
 
 const { parseSetCookie } = __nccwpck_require__(8915)
-const { stringify, getHeadersList } = __nccwpck_require__(3834)
+const { stringify } = __nccwpck_require__(3834)
 const { webidl } = __nccwpck_require__(4222)
 const { Headers } = __nccwpck_require__(6349)
 
@@ -14316,14 +14682,13 @@ function getSetCookies (headers) {
 
   webidl.brandCheck(headers, Headers, { strict: false })
 
-  const cookies = getHeadersList(headers).cookies
+  const cookies = headers.getSetCookie()
 
   if (!cookies) {
     return []
   }
 
-  // In older versions of undici, cookies is a list of name:value.
-  return cookies.map((pair) => parseSetCookie(Array.isArray(pair) ? pair[1] : pair))
+  return cookies.map((pair) => parseSetCookie(pair))
 }
 
 /**
@@ -14751,14 +15116,15 @@ module.exports = {
 /***/ }),
 
 /***/ 3834:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ ((module) => {
 
 "use strict";
 
 
-const assert = __nccwpck_require__(2613)
-const { kHeadersList } = __nccwpck_require__(6443)
-
+/**
+ * @param {string} value
+ * @returns {boolean}
+ */
 function isCTLExcludingHtab (value) {
   if (value.length === 0) {
     return false
@@ -15019,31 +15385,13 @@ function stringify (cookie) {
   return out.join('; ')
 }
 
-let kHeadersListNode
-
-function getHeadersList (headers) {
-  if (headers[kHeadersList]) {
-    return headers[kHeadersList]
-  }
-
-  if (!kHeadersListNode) {
-    kHeadersListNode = Object.getOwnPropertySymbols(headers).find(
-      (symbol) => symbol.description === 'headers list'
-    )
-
-    assert(kHeadersListNode, 'Headers cannot be parsed')
-  }
-
-  const headersList = headers[kHeadersListNode]
-  assert(headersList)
-
-  return headersList
-}
-
 module.exports = {
   isCTLExcludingHtab,
-  stringify,
-  getHeadersList
+  validateCookieName,
+  validateCookiePath,
+  validateCookieValue,
+  toIMFDate,
+  stringify
 }
 
 
@@ -15242,6 +15590,132 @@ function onConnectTimeout (socket) {
 }
 
 module.exports = buildConnector
+
+
+/***/ }),
+
+/***/ 735:
+/***/ ((module) => {
+
+"use strict";
+
+
+/** @type {Record<string, string | undefined>} */
+const headerNameLowerCasedRecord = {}
+
+// https://developer.mozilla.org/docs/Web/HTTP/Headers
+const wellknownHeaderNames = [
+  'Accept',
+  'Accept-Encoding',
+  'Accept-Language',
+  'Accept-Ranges',
+  'Access-Control-Allow-Credentials',
+  'Access-Control-Allow-Headers',
+  'Access-Control-Allow-Methods',
+  'Access-Control-Allow-Origin',
+  'Access-Control-Expose-Headers',
+  'Access-Control-Max-Age',
+  'Access-Control-Request-Headers',
+  'Access-Control-Request-Method',
+  'Age',
+  'Allow',
+  'Alt-Svc',
+  'Alt-Used',
+  'Authorization',
+  'Cache-Control',
+  'Clear-Site-Data',
+  'Connection',
+  'Content-Disposition',
+  'Content-Encoding',
+  'Content-Language',
+  'Content-Length',
+  'Content-Location',
+  'Content-Range',
+  'Content-Security-Policy',
+  'Content-Security-Policy-Report-Only',
+  'Content-Type',
+  'Cookie',
+  'Cross-Origin-Embedder-Policy',
+  'Cross-Origin-Opener-Policy',
+  'Cross-Origin-Resource-Policy',
+  'Date',
+  'Device-Memory',
+  'Downlink',
+  'ECT',
+  'ETag',
+  'Expect',
+  'Expect-CT',
+  'Expires',
+  'Forwarded',
+  'From',
+  'Host',
+  'If-Match',
+  'If-Modified-Since',
+  'If-None-Match',
+  'If-Range',
+  'If-Unmodified-Since',
+  'Keep-Alive',
+  'Last-Modified',
+  'Link',
+  'Location',
+  'Max-Forwards',
+  'Origin',
+  'Permissions-Policy',
+  'Pragma',
+  'Proxy-Authenticate',
+  'Proxy-Authorization',
+  'RTT',
+  'Range',
+  'Referer',
+  'Referrer-Policy',
+  'Refresh',
+  'Retry-After',
+  'Sec-WebSocket-Accept',
+  'Sec-WebSocket-Extensions',
+  'Sec-WebSocket-Key',
+  'Sec-WebSocket-Protocol',
+  'Sec-WebSocket-Version',
+  'Server',
+  'Server-Timing',
+  'Service-Worker-Allowed',
+  'Service-Worker-Navigation-Preload',
+  'Set-Cookie',
+  'SourceMap',
+  'Strict-Transport-Security',
+  'Supports-Loading-Mode',
+  'TE',
+  'Timing-Allow-Origin',
+  'Trailer',
+  'Transfer-Encoding',
+  'Upgrade',
+  'Upgrade-Insecure-Requests',
+  'User-Agent',
+  'Vary',
+  'Via',
+  'WWW-Authenticate',
+  'X-Content-Type-Options',
+  'X-DNS-Prefetch-Control',
+  'X-Frame-Options',
+  'X-Permitted-Cross-Domain-Policies',
+  'X-Powered-By',
+  'X-Requested-With',
+  'X-XSS-Protection'
+]
+
+for (let i = 0; i < wellknownHeaderNames.length; ++i) {
+  const key = wellknownHeaderNames[i]
+  const lowerCasedKey = key.toLowerCase()
+  headerNameLowerCasedRecord[key] = headerNameLowerCasedRecord[lowerCasedKey] =
+    lowerCasedKey
+}
+
+// Note: object prototypes should not be able to be referenced. e.g. `Object#hasOwnProperty`.
+Object.setPrototypeOf(headerNameLowerCasedRecord, null)
+
+module.exports = {
+  wellknownHeaderNames,
+  headerNameLowerCasedRecord
+}
 
 
 /***/ }),
@@ -16076,6 +16550,7 @@ const { InvalidArgumentError } = __nccwpck_require__(8707)
 const { Blob } = __nccwpck_require__(181)
 const nodeUtil = __nccwpck_require__(9023)
 const { stringify } = __nccwpck_require__(3480)
+const { headerNameLowerCasedRecord } = __nccwpck_require__(735)
 
 const [nodeMajor, nodeMinor] = process.versions.node.split('.').map(v => Number(v))
 
@@ -16283,6 +16758,15 @@ const KEEPALIVE_TIMEOUT_EXPR = /timeout=(\d+)/
 function parseKeepAliveTimeout (val) {
   const m = val.toString().match(KEEPALIVE_TIMEOUT_EXPR)
   return m ? parseInt(m[1], 10) * 1000 : null
+}
+
+/**
+ * Retrieves a header name and returns its lowercase value.
+ * @param {string | Buffer} value Header name
+ * @returns {string}
+ */
+function headerNameToString (value) {
+  return headerNameLowerCasedRecord[value] || value.toLowerCase()
 }
 
 function parseHeaders (headers, obj = {}) {
@@ -16556,6 +17040,7 @@ module.exports = {
   isIterable,
   isAsyncIterable,
   isDestroyed,
+  headerNameToString,
   parseRawHeaders,
   parseHeaders,
   parseKeepAliveTimeout,
@@ -16835,6 +17320,14 @@ const { isUint8Array, isArrayBuffer } = __nccwpck_require__(8253)
 const { File: UndiciFile } = __nccwpck_require__(3041)
 const { parseMIMEType, serializeAMimeType } = __nccwpck_require__(4322)
 
+let random
+try {
+  const crypto = __nccwpck_require__(7598)
+  random = (max) => crypto.randomInt(0, max)
+} catch {
+  random = (max) => Math.floor(Math.random(max))
+}
+
 let ReadableStream = globalThis.ReadableStream
 
 /** @type {globalThis['File']} */
@@ -16920,7 +17413,7 @@ function extractBody (object, keepalive = false) {
     // Set source to a copy of the bytes held by object.
     source = new Uint8Array(object.buffer.slice(object.byteOffset, object.byteOffset + object.byteLength))
   } else if (util.isFormDataLike(object)) {
-    const boundary = `----formdata-undici-0${`${Math.floor(Math.random() * 1e11)}`.padStart(11, '0')}`
+    const boundary = `----formdata-undici-0${`${random(1e11)}`.padStart(11, '0')}`
     const prefix = `--${boundary}\r\nContent-Disposition: form-data`
 
     /*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
@@ -18902,6 +19395,7 @@ const {
   isValidHeaderName,
   isValidHeaderValue
 } = __nccwpck_require__(5523)
+const util = __nccwpck_require__(9023)
 const { webidl } = __nccwpck_require__(4222)
 const assert = __nccwpck_require__(2613)
 
@@ -19455,6 +19949,9 @@ Object.defineProperties(Headers.prototype, {
   [Symbol.toStringTag]: {
     value: 'Headers',
     configurable: true
+  },
+  [util.inspect.custom]: {
+    enumerable: false
   }
 })
 
@@ -20691,6 +21188,9 @@ function httpRedirectFetch (fetchParams, response) {
   if (!sameOrigin(requestCurrentURL(request), locationURL)) {
     // https://fetch.spec.whatwg.org/#cors-non-wildcard-request-header-name
     request.headersList.delete('authorization')
+
+    // https://fetch.spec.whatwg.org/#authentication-entries
+    request.headersList.delete('proxy-authorization', true)
 
     // "Cookie" and "Host" are forbidden request-headers, which undici doesn't implement.
     request.headersList.delete('cookie')
@@ -23200,14 +23700,18 @@ const { isBlobLike, toUSVString, ReadableStreamFrom } = __nccwpck_require__(3440
 const assert = __nccwpck_require__(2613)
 const { isUint8Array } = __nccwpck_require__(8253)
 
+let supportedHashes = []
+
 // https://nodejs.org/api/crypto.html#determining-if-crypto-support-is-unavailable
 /** @type {import('crypto')|undefined} */
 let crypto
 
 try {
   crypto = __nccwpck_require__(6982)
+  const possibleRelevantHashes = ['sha256', 'sha384', 'sha512']
+  supportedHashes = crypto.getHashes().filter((hash) => possibleRelevantHashes.includes(hash))
+/* c8 ignore next 3 */
 } catch {
-
 }
 
 function responseURL (response) {
@@ -23735,66 +24239,56 @@ function bytesMatch (bytes, metadataList) {
     return true
   }
 
-  // 3. If parsedMetadata is the empty set, return true.
+  // 3. If response is not eligible for integrity validation, return false.
+  // TODO
+
+  // 4. If parsedMetadata is the empty set, return true.
   if (parsedMetadata.length === 0) {
     return true
   }
 
-  // 4. Let metadata be the result of getting the strongest
+  // 5. Let metadata be the result of getting the strongest
   //    metadata from parsedMetadata.
-  const list = parsedMetadata.sort((c, d) => d.algo.localeCompare(c.algo))
-  // get the strongest algorithm
-  const strongest = list[0].algo
-  // get all entries that use the strongest algorithm; ignore weaker
-  const metadata = list.filter((item) => item.algo === strongest)
+  const strongest = getStrongestMetadata(parsedMetadata)
+  const metadata = filterMetadataListByAlgorithm(parsedMetadata, strongest)
 
-  // 5. For each item in metadata:
+  // 6. For each item in metadata:
   for (const item of metadata) {
     // 1. Let algorithm be the alg component of item.
     const algorithm = item.algo
 
     // 2. Let expectedValue be the val component of item.
-    let expectedValue = item.hash
+    const expectedValue = item.hash
 
     // See https://github.com/web-platform-tests/wpt/commit/e4c5cc7a5e48093220528dfdd1c4012dc3837a0e
     // "be liberal with padding". This is annoying, and it's not even in the spec.
 
-    if (expectedValue.endsWith('==')) {
-      expectedValue = expectedValue.slice(0, -2)
-    }
-
     // 3. Let actualValue be the result of applying algorithm to bytes.
     let actualValue = crypto.createHash(algorithm).update(bytes).digest('base64')
 
-    if (actualValue.endsWith('==')) {
-      actualValue = actualValue.slice(0, -2)
+    if (actualValue[actualValue.length - 1] === '=') {
+      if (actualValue[actualValue.length - 2] === '=') {
+        actualValue = actualValue.slice(0, -2)
+      } else {
+        actualValue = actualValue.slice(0, -1)
+      }
     }
 
     // 4. If actualValue is a case-sensitive match for expectedValue,
     //    return true.
-    if (actualValue === expectedValue) {
-      return true
-    }
-
-    let actualBase64URL = crypto.createHash(algorithm).update(bytes).digest('base64url')
-
-    if (actualBase64URL.endsWith('==')) {
-      actualBase64URL = actualBase64URL.slice(0, -2)
-    }
-
-    if (actualBase64URL === expectedValue) {
+    if (compareBase64Mixed(actualValue, expectedValue)) {
       return true
     }
   }
 
-  // 6. Return false.
+  // 7. Return false.
   return false
 }
 
 // https://w3c.github.io/webappsec-subresource-integrity/#grammardef-hash-with-options
 // https://www.w3.org/TR/CSP2/#source-list-syntax
 // https://www.rfc-editor.org/rfc/rfc5234#appendix-B.1
-const parseHashWithOptions = /((?<algo>sha256|sha384|sha512)-(?<hash>[A-z0-9+/]{1}.*={0,2}))( +[\x21-\x7e]?)?/i
+const parseHashWithOptions = /(?<algo>sha256|sha384|sha512)-((?<hash>[A-Za-z0-9+/]+|[A-Za-z0-9_-]+)={0,2}(?:\s|$)( +[!-~]*)?)?/i
 
 /**
  * @see https://w3c.github.io/webappsec-subresource-integrity/#parse-metadata
@@ -23808,8 +24302,6 @@ function parseMetadata (metadata) {
   // 2. Let empty be equal to true.
   let empty = true
 
-  const supportedHashes = crypto.getHashes()
-
   // 3. For each token returned by splitting metadata on spaces:
   for (const token of metadata.split(' ')) {
     // 1. Set empty to false.
@@ -23819,7 +24311,11 @@ function parseMetadata (metadata) {
     const parsedToken = parseHashWithOptions.exec(token)
 
     // 3. If token does not parse, continue to the next token.
-    if (parsedToken === null || parsedToken.groups === undefined) {
+    if (
+      parsedToken === null ||
+      parsedToken.groups === undefined ||
+      parsedToken.groups.algo === undefined
+    ) {
       // Note: Chromium blocks the request at this point, but Firefox
       // gives a warning that an invalid integrity was given. The
       // correct behavior is to ignore these, and subsequently not
@@ -23828,11 +24324,11 @@ function parseMetadata (metadata) {
     }
 
     // 4. Let algorithm be the hash-algo component of token.
-    const algorithm = parsedToken.groups.algo
+    const algorithm = parsedToken.groups.algo.toLowerCase()
 
     // 5. If algorithm is a hash function recognized by the user
     //    agent, add the parsed token to result.
-    if (supportedHashes.includes(algorithm.toLowerCase())) {
+    if (supportedHashes.includes(algorithm)) {
       result.push(parsedToken.groups)
     }
   }
@@ -23843,6 +24339,82 @@ function parseMetadata (metadata) {
   }
 
   return result
+}
+
+/**
+ * @param {{ algo: 'sha256' | 'sha384' | 'sha512' }[]} metadataList
+ */
+function getStrongestMetadata (metadataList) {
+  // Let algorithm be the algo component of the first item in metadataList.
+  // Can be sha256
+  let algorithm = metadataList[0].algo
+  // If the algorithm is sha512, then it is the strongest
+  // and we can return immediately
+  if (algorithm[3] === '5') {
+    return algorithm
+  }
+
+  for (let i = 1; i < metadataList.length; ++i) {
+    const metadata = metadataList[i]
+    // If the algorithm is sha512, then it is the strongest
+    // and we can break the loop immediately
+    if (metadata.algo[3] === '5') {
+      algorithm = 'sha512'
+      break
+    // If the algorithm is sha384, then a potential sha256 or sha384 is ignored
+    } else if (algorithm[3] === '3') {
+      continue
+    // algorithm is sha256, check if algorithm is sha384 and if so, set it as
+    // the strongest
+    } else if (metadata.algo[3] === '3') {
+      algorithm = 'sha384'
+    }
+  }
+  return algorithm
+}
+
+function filterMetadataListByAlgorithm (metadataList, algorithm) {
+  if (metadataList.length === 1) {
+    return metadataList
+  }
+
+  let pos = 0
+  for (let i = 0; i < metadataList.length; ++i) {
+    if (metadataList[i].algo === algorithm) {
+      metadataList[pos++] = metadataList[i]
+    }
+  }
+
+  metadataList.length = pos
+
+  return metadataList
+}
+
+/**
+ * Compares two base64 strings, allowing for base64url
+ * in the second string.
+ *
+* @param {string} actualValue always base64
+ * @param {string} expectedValue base64 or base64url
+ * @returns {boolean}
+ */
+function compareBase64Mixed (actualValue, expectedValue) {
+  if (actualValue.length !== expectedValue.length) {
+    return false
+  }
+  for (let i = 0; i < actualValue.length; ++i) {
+    if (actualValue[i] !== expectedValue[i]) {
+      if (
+        (actualValue[i] === '+' && expectedValue[i] === '-') ||
+        (actualValue[i] === '/' && expectedValue[i] === '_')
+      ) {
+        continue
+      }
+      return false
+    }
+  }
+
+  return true
 }
 
 // https://w3c.github.io/webappsec-upgrade-insecure-requests/#upgrade-request
@@ -24260,7 +24832,8 @@ module.exports = {
   urlHasHttpsScheme,
   urlIsHttpHttpsScheme,
   readAllBytes,
-  normalizeMethodRecord
+  normalizeMethodRecord,
+  parseMetadata
 }
 
 
@@ -26347,12 +26920,17 @@ function parseLocation (statusCode, headers) {
 
 // https://tools.ietf.org/html/rfc7231#section-6.4.4
 function shouldRemoveHeader (header, removeContent, unknownOrigin) {
-  return (
-    (header.length === 4 && header.toString().toLowerCase() === 'host') ||
-    (removeContent && header.toString().toLowerCase().indexOf('content-') === 0) ||
-    (unknownOrigin && header.length === 13 && header.toString().toLowerCase() === 'authorization') ||
-    (unknownOrigin && header.length === 6 && header.toString().toLowerCase() === 'cookie')
-  )
+  if (header.length === 4) {
+    return util.headerNameToString(header) === 'host'
+  }
+  if (removeContent && util.headerNameToString(header).startsWith('content-')) {
+    return true
+  }
+  if (unknownOrigin && (header.length === 13 || header.length === 6 || header.length === 19)) {
+    const name = util.headerNameToString(header)
+    return name === 'authorization' || name === 'cookie' || name === 'proxy-authorization'
+  }
+  return false
 }
 
 // https://tools.ietf.org/html/rfc7231#section-6.4
@@ -28550,6 +29128,20 @@ class Pool extends PoolBase {
       ? { ...options.interceptors }
       : undefined
     this[kFactory] = factory
+
+    this.on('connectionError', (origin, targets, error) => {
+      // If a connection error occurs, we remove the client from the pool,
+      // and emit a connectionError event. They will not be re-used.
+      // Fixes https://github.com/nodejs/undici/issues/3895
+      for (const target of targets) {
+        // Do not use kRemoveClient here, as it will close the client,
+        // but the client cannot be closed in this state.
+        const idx = this[kClients].indexOf(target)
+        if (idx !== -1) {
+          this[kClients].splice(idx, 1)
+        }
+      }
+    })
   }
 
   [kGetDispatcher] () {
@@ -30932,8 +31524,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(7484);
 const github_1 = __nccwpck_require__(3228);
 const http_status_codes_1 = __nccwpck_require__(3268);
-const promises_1 = __nccwpck_require__(1943);
-// @ts-expect-error CommonJS module error
+const promises_1 = __nccwpck_require__(1455);
 const mime_1 = __importDefault(__nccwpck_require__(5086));
 async function run() {
     const token = (0, core_1.getInput)('token');
@@ -30991,7 +31582,7 @@ ${commitMessages}`);
     if (assetsPath !== '') {
         (0, core_1.info)('Set up assets directory');
         const files = await (0, promises_1.readdir)(assetsPath, { withFileTypes: true });
-        for (const { name, path } of files.filter(file => file.isFile())) {
+        for (const { name, parentPath } of files.filter(file => file.isFile())) {
             (0, core_1.info)(`Uploading file ${name}`);
             const { headers, method, url } = octokit.rest.repos.uploadReleaseAsset.endpoint({
                 repo,
@@ -30999,7 +31590,7 @@ ${commitMessages}`);
                 release_id: release.data.id,
                 name
             });
-            const data = await (0, promises_1.readFile)(`${path}/${name}`);
+            const data = await (0, promises_1.readFile)(`${parentPath}/${name}`);
             await fetch(url, {
                 method,
                 headers: {
@@ -31092,14 +31683,6 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 1943:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs/promises");
-
-/***/ }),
-
 /***/ 8611:
 /***/ ((module) => {
 
@@ -31132,11 +31715,27 @@ module.exports = require("net");
 
 /***/ }),
 
+/***/ 7598:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:crypto");
+
+/***/ }),
+
 /***/ 8474:
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("node:events");
+
+/***/ }),
+
+/***/ 1455:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
 
 /***/ }),
 
@@ -31352,7 +31951,7 @@ Dicer.prototype._write = function (data, encoding, cb) {
   if (this._headerFirst && this._isPreamble) {
     if (!this._part) {
       this._part = new PartStream(this._partOpts)
-      if (this._events.preamble) { this.emit('preamble', this._part) } else { this._ignore() }
+      if (this.listenerCount('preamble') !== 0) { this.emit('preamble', this._part) } else { this._ignore() }
     }
     const r = this._hparser.push(data)
     if (!this._inHeader && r !== undefined && r < data.length) { data = data.slice(r) } else { return cb() }
@@ -31409,7 +32008,7 @@ Dicer.prototype._oninfo = function (isMatch, data, start, end) {
       }
     }
     if (this._dashes === 2) {
-      if ((start + i) < end && this._events.trailer) { this.emit('trailer', data.slice(start + i, end)) }
+      if ((start + i) < end && this.listenerCount('trailer') !== 0) { this.emit('trailer', data.slice(start + i, end)) }
       this.reset()
       this._finished = true
       // no more parts will be added
@@ -31427,7 +32026,13 @@ Dicer.prototype._oninfo = function (isMatch, data, start, end) {
     this._part._read = function (n) {
       self._unpause()
     }
-    if (this._isPreamble && this._events.preamble) { this.emit('preamble', this._part) } else if (this._isPreamble !== true && this._events.part) { this.emit('part', this._part) } else { this._ignore() }
+    if (this._isPreamble && this.listenerCount('preamble') !== 0) {
+      this.emit('preamble', this._part)
+    } else if (this._isPreamble !== true && this.listenerCount('part') !== 0) {
+      this.emit('part', this._part)
+    } else {
+      this._ignore()
+    }
     if (!this._isPreamble) { this._inHeader = true }
   }
   if (data && start < end && !this._ignoreData) {
@@ -32110,7 +32715,7 @@ function Multipart (boy, cfg) {
 
         ++nfiles
 
-        if (!boy._events.file) {
+        if (boy.listenerCount('file') === 0) {
           self.parser._ignore()
           return
         }
@@ -32639,7 +33244,7 @@ const decoders = {
     if (textDecoders.has(this.toString())) {
       try {
         return textDecoders.get(this).decode(data)
-      } catch (e) { }
+      } catch {}
     }
     return typeof data === 'string'
       ? data
@@ -32901,15 +33506,1094 @@ __nccwpck_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./node_modules/mime/dist/types/other.js
-const types = { "application/prs.cww": ["cww"], "application/prs.xsf+xml": ["xsf"], "application/vnd.1000minds.decision-model+xml": ["1km"], "application/vnd.3gpp.pic-bw-large": ["plb"], "application/vnd.3gpp.pic-bw-small": ["psb"], "application/vnd.3gpp.pic-bw-var": ["pvb"], "application/vnd.3gpp2.tcap": ["tcap"], "application/vnd.3m.post-it-notes": ["pwn"], "application/vnd.accpac.simply.aso": ["aso"], "application/vnd.accpac.simply.imp": ["imp"], "application/vnd.acucobol": ["acu"], "application/vnd.acucorp": ["atc", "acutc"], "application/vnd.adobe.air-application-installer-package+zip": ["air"], "application/vnd.adobe.formscentral.fcdt": ["fcdt"], "application/vnd.adobe.fxp": ["fxp", "fxpl"], "application/vnd.adobe.xdp+xml": ["xdp"], "application/vnd.adobe.xfdf": ["*xfdf"], "application/vnd.age": ["age"], "application/vnd.ahead.space": ["ahead"], "application/vnd.airzip.filesecure.azf": ["azf"], "application/vnd.airzip.filesecure.azs": ["azs"], "application/vnd.amazon.ebook": ["azw"], "application/vnd.americandynamics.acc": ["acc"], "application/vnd.amiga.ami": ["ami"], "application/vnd.android.package-archive": ["apk"], "application/vnd.anser-web-certificate-issue-initiation": ["cii"], "application/vnd.anser-web-funds-transfer-initiation": ["fti"], "application/vnd.antix.game-component": ["atx"], "application/vnd.apple.installer+xml": ["mpkg"], "application/vnd.apple.keynote": ["key"], "application/vnd.apple.mpegurl": ["m3u8"], "application/vnd.apple.numbers": ["numbers"], "application/vnd.apple.pages": ["pages"], "application/vnd.apple.pkpass": ["pkpass"], "application/vnd.aristanetworks.swi": ["swi"], "application/vnd.astraea-software.iota": ["iota"], "application/vnd.audiograph": ["aep"], "application/vnd.balsamiq.bmml+xml": ["bmml"], "application/vnd.blueice.multipass": ["mpm"], "application/vnd.bmi": ["bmi"], "application/vnd.businessobjects": ["rep"], "application/vnd.chemdraw+xml": ["cdxml"], "application/vnd.chipnuts.karaoke-mmd": ["mmd"], "application/vnd.cinderella": ["cdy"], "application/vnd.citationstyles.style+xml": ["csl"], "application/vnd.claymore": ["cla"], "application/vnd.cloanto.rp9": ["rp9"], "application/vnd.clonk.c4group": ["c4g", "c4d", "c4f", "c4p", "c4u"], "application/vnd.cluetrust.cartomobile-config": ["c11amc"], "application/vnd.cluetrust.cartomobile-config-pkg": ["c11amz"], "application/vnd.commonspace": ["csp"], "application/vnd.contact.cmsg": ["cdbcmsg"], "application/vnd.cosmocaller": ["cmc"], "application/vnd.crick.clicker": ["clkx"], "application/vnd.crick.clicker.keyboard": ["clkk"], "application/vnd.crick.clicker.palette": ["clkp"], "application/vnd.crick.clicker.template": ["clkt"], "application/vnd.crick.clicker.wordbank": ["clkw"], "application/vnd.criticaltools.wbs+xml": ["wbs"], "application/vnd.ctc-posml": ["pml"], "application/vnd.cups-ppd": ["ppd"], "application/vnd.curl.car": ["car"], "application/vnd.curl.pcurl": ["pcurl"], "application/vnd.dart": ["dart"], "application/vnd.data-vision.rdz": ["rdz"], "application/vnd.dbf": ["dbf"], "application/vnd.dece.data": ["uvf", "uvvf", "uvd", "uvvd"], "application/vnd.dece.ttml+xml": ["uvt", "uvvt"], "application/vnd.dece.unspecified": ["uvx", "uvvx"], "application/vnd.dece.zip": ["uvz", "uvvz"], "application/vnd.denovo.fcselayout-link": ["fe_launch"], "application/vnd.dna": ["dna"], "application/vnd.dolby.mlp": ["mlp"], "application/vnd.dpgraph": ["dpg"], "application/vnd.dreamfactory": ["dfac"], "application/vnd.ds-keypoint": ["kpxx"], "application/vnd.dvb.ait": ["ait"], "application/vnd.dvb.service": ["svc"], "application/vnd.dynageo": ["geo"], "application/vnd.ecowin.chart": ["mag"], "application/vnd.enliven": ["nml"], "application/vnd.epson.esf": ["esf"], "application/vnd.epson.msf": ["msf"], "application/vnd.epson.quickanime": ["qam"], "application/vnd.epson.salt": ["slt"], "application/vnd.epson.ssf": ["ssf"], "application/vnd.eszigno3+xml": ["es3", "et3"], "application/vnd.ezpix-album": ["ez2"], "application/vnd.ezpix-package": ["ez3"], "application/vnd.fdf": ["*fdf"], "application/vnd.fdsn.mseed": ["mseed"], "application/vnd.fdsn.seed": ["seed", "dataless"], "application/vnd.flographit": ["gph"], "application/vnd.fluxtime.clip": ["ftc"], "application/vnd.framemaker": ["fm", "frame", "maker", "book"], "application/vnd.frogans.fnc": ["fnc"], "application/vnd.frogans.ltf": ["ltf"], "application/vnd.fsc.weblaunch": ["fsc"], "application/vnd.fujitsu.oasys": ["oas"], "application/vnd.fujitsu.oasys2": ["oa2"], "application/vnd.fujitsu.oasys3": ["oa3"], "application/vnd.fujitsu.oasysgp": ["fg5"], "application/vnd.fujitsu.oasysprs": ["bh2"], "application/vnd.fujixerox.ddd": ["ddd"], "application/vnd.fujixerox.docuworks": ["xdw"], "application/vnd.fujixerox.docuworks.binder": ["xbd"], "application/vnd.fuzzysheet": ["fzs"], "application/vnd.genomatix.tuxedo": ["txd"], "application/vnd.geogebra.file": ["ggb"], "application/vnd.geogebra.tool": ["ggt"], "application/vnd.geometry-explorer": ["gex", "gre"], "application/vnd.geonext": ["gxt"], "application/vnd.geoplan": ["g2w"], "application/vnd.geospace": ["g3w"], "application/vnd.gmx": ["gmx"], "application/vnd.google-apps.document": ["gdoc"], "application/vnd.google-apps.presentation": ["gslides"], "application/vnd.google-apps.spreadsheet": ["gsheet"], "application/vnd.google-earth.kml+xml": ["kml"], "application/vnd.google-earth.kmz": ["kmz"], "application/vnd.grafeq": ["gqf", "gqs"], "application/vnd.groove-account": ["gac"], "application/vnd.groove-help": ["ghf"], "application/vnd.groove-identity-message": ["gim"], "application/vnd.groove-injector": ["grv"], "application/vnd.groove-tool-message": ["gtm"], "application/vnd.groove-tool-template": ["tpl"], "application/vnd.groove-vcard": ["vcg"], "application/vnd.hal+xml": ["hal"], "application/vnd.handheld-entertainment+xml": ["zmm"], "application/vnd.hbci": ["hbci"], "application/vnd.hhe.lesson-player": ["les"], "application/vnd.hp-hpgl": ["hpgl"], "application/vnd.hp-hpid": ["hpid"], "application/vnd.hp-hps": ["hps"], "application/vnd.hp-jlyt": ["jlt"], "application/vnd.hp-pcl": ["pcl"], "application/vnd.hp-pclxl": ["pclxl"], "application/vnd.hydrostatix.sof-data": ["sfd-hdstx"], "application/vnd.ibm.minipay": ["mpy"], "application/vnd.ibm.modcap": ["afp", "listafp", "list3820"], "application/vnd.ibm.rights-management": ["irm"], "application/vnd.ibm.secure-container": ["sc"], "application/vnd.iccprofile": ["icc", "icm"], "application/vnd.igloader": ["igl"], "application/vnd.immervision-ivp": ["ivp"], "application/vnd.immervision-ivu": ["ivu"], "application/vnd.insors.igm": ["igm"], "application/vnd.intercon.formnet": ["xpw", "xpx"], "application/vnd.intergeo": ["i2g"], "application/vnd.intu.qbo": ["qbo"], "application/vnd.intu.qfx": ["qfx"], "application/vnd.ipunplugged.rcprofile": ["rcprofile"], "application/vnd.irepository.package+xml": ["irp"], "application/vnd.is-xpr": ["xpr"], "application/vnd.isac.fcs": ["fcs"], "application/vnd.jam": ["jam"], "application/vnd.jcp.javame.midlet-rms": ["rms"], "application/vnd.jisp": ["jisp"], "application/vnd.joost.joda-archive": ["joda"], "application/vnd.kahootz": ["ktz", "ktr"], "application/vnd.kde.karbon": ["karbon"], "application/vnd.kde.kchart": ["chrt"], "application/vnd.kde.kformula": ["kfo"], "application/vnd.kde.kivio": ["flw"], "application/vnd.kde.kontour": ["kon"], "application/vnd.kde.kpresenter": ["kpr", "kpt"], "application/vnd.kde.kspread": ["ksp"], "application/vnd.kde.kword": ["kwd", "kwt"], "application/vnd.kenameaapp": ["htke"], "application/vnd.kidspiration": ["kia"], "application/vnd.kinar": ["kne", "knp"], "application/vnd.koan": ["skp", "skd", "skt", "skm"], "application/vnd.kodak-descriptor": ["sse"], "application/vnd.las.las+xml": ["lasxml"], "application/vnd.llamagraphics.life-balance.desktop": ["lbd"], "application/vnd.llamagraphics.life-balance.exchange+xml": ["lbe"], "application/vnd.lotus-1-2-3": ["123"], "application/vnd.lotus-approach": ["apr"], "application/vnd.lotus-freelance": ["pre"], "application/vnd.lotus-notes": ["nsf"], "application/vnd.lotus-organizer": ["org"], "application/vnd.lotus-screencam": ["scm"], "application/vnd.lotus-wordpro": ["lwp"], "application/vnd.macports.portpkg": ["portpkg"], "application/vnd.mapbox-vector-tile": ["mvt"], "application/vnd.mcd": ["mcd"], "application/vnd.medcalcdata": ["mc1"], "application/vnd.mediastation.cdkey": ["cdkey"], "application/vnd.mfer": ["mwf"], "application/vnd.mfmp": ["mfm"], "application/vnd.micrografx.flo": ["flo"], "application/vnd.micrografx.igx": ["igx"], "application/vnd.mif": ["mif"], "application/vnd.mobius.daf": ["daf"], "application/vnd.mobius.dis": ["dis"], "application/vnd.mobius.mbk": ["mbk"], "application/vnd.mobius.mqy": ["mqy"], "application/vnd.mobius.msl": ["msl"], "application/vnd.mobius.plc": ["plc"], "application/vnd.mobius.txf": ["txf"], "application/vnd.mophun.application": ["mpn"], "application/vnd.mophun.certificate": ["mpc"], "application/vnd.mozilla.xul+xml": ["xul"], "application/vnd.ms-artgalry": ["cil"], "application/vnd.ms-cab-compressed": ["cab"], "application/vnd.ms-excel": ["xls", "xlm", "xla", "xlc", "xlt", "xlw"], "application/vnd.ms-excel.addin.macroenabled.12": ["xlam"], "application/vnd.ms-excel.sheet.binary.macroenabled.12": ["xlsb"], "application/vnd.ms-excel.sheet.macroenabled.12": ["xlsm"], "application/vnd.ms-excel.template.macroenabled.12": ["xltm"], "application/vnd.ms-fontobject": ["eot"], "application/vnd.ms-htmlhelp": ["chm"], "application/vnd.ms-ims": ["ims"], "application/vnd.ms-lrm": ["lrm"], "application/vnd.ms-officetheme": ["thmx"], "application/vnd.ms-outlook": ["msg"], "application/vnd.ms-pki.seccat": ["cat"], "application/vnd.ms-pki.stl": ["*stl"], "application/vnd.ms-powerpoint": ["ppt", "pps", "pot"], "application/vnd.ms-powerpoint.addin.macroenabled.12": ["ppam"], "application/vnd.ms-powerpoint.presentation.macroenabled.12": ["pptm"], "application/vnd.ms-powerpoint.slide.macroenabled.12": ["sldm"], "application/vnd.ms-powerpoint.slideshow.macroenabled.12": ["ppsm"], "application/vnd.ms-powerpoint.template.macroenabled.12": ["potm"], "application/vnd.ms-project": ["*mpp", "mpt"], "application/vnd.ms-word.document.macroenabled.12": ["docm"], "application/vnd.ms-word.template.macroenabled.12": ["dotm"], "application/vnd.ms-works": ["wps", "wks", "wcm", "wdb"], "application/vnd.ms-wpl": ["wpl"], "application/vnd.ms-xpsdocument": ["xps"], "application/vnd.mseq": ["mseq"], "application/vnd.musician": ["mus"], "application/vnd.muvee.style": ["msty"], "application/vnd.mynfc": ["taglet"], "application/vnd.neurolanguage.nlu": ["nlu"], "application/vnd.nitf": ["ntf", "nitf"], "application/vnd.noblenet-directory": ["nnd"], "application/vnd.noblenet-sealer": ["nns"], "application/vnd.noblenet-web": ["nnw"], "application/vnd.nokia.n-gage.ac+xml": ["*ac"], "application/vnd.nokia.n-gage.data": ["ngdat"], "application/vnd.nokia.n-gage.symbian.install": ["n-gage"], "application/vnd.nokia.radio-preset": ["rpst"], "application/vnd.nokia.radio-presets": ["rpss"], "application/vnd.novadigm.edm": ["edm"], "application/vnd.novadigm.edx": ["edx"], "application/vnd.novadigm.ext": ["ext"], "application/vnd.oasis.opendocument.chart": ["odc"], "application/vnd.oasis.opendocument.chart-template": ["otc"], "application/vnd.oasis.opendocument.database": ["odb"], "application/vnd.oasis.opendocument.formula": ["odf"], "application/vnd.oasis.opendocument.formula-template": ["odft"], "application/vnd.oasis.opendocument.graphics": ["odg"], "application/vnd.oasis.opendocument.graphics-template": ["otg"], "application/vnd.oasis.opendocument.image": ["odi"], "application/vnd.oasis.opendocument.image-template": ["oti"], "application/vnd.oasis.opendocument.presentation": ["odp"], "application/vnd.oasis.opendocument.presentation-template": ["otp"], "application/vnd.oasis.opendocument.spreadsheet": ["ods"], "application/vnd.oasis.opendocument.spreadsheet-template": ["ots"], "application/vnd.oasis.opendocument.text": ["odt"], "application/vnd.oasis.opendocument.text-master": ["odm"], "application/vnd.oasis.opendocument.text-template": ["ott"], "application/vnd.oasis.opendocument.text-web": ["oth"], "application/vnd.olpc-sugar": ["xo"], "application/vnd.oma.dd2+xml": ["dd2"], "application/vnd.openblox.game+xml": ["obgx"], "application/vnd.openofficeorg.extension": ["oxt"], "application/vnd.openstreetmap.data+xml": ["osm"], "application/vnd.openxmlformats-officedocument.presentationml.presentation": ["pptx"], "application/vnd.openxmlformats-officedocument.presentationml.slide": ["sldx"], "application/vnd.openxmlformats-officedocument.presentationml.slideshow": ["ppsx"], "application/vnd.openxmlformats-officedocument.presentationml.template": ["potx"], "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ["xlsx"], "application/vnd.openxmlformats-officedocument.spreadsheetml.template": ["xltx"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ["docx"], "application/vnd.openxmlformats-officedocument.wordprocessingml.template": ["dotx"], "application/vnd.osgeo.mapguide.package": ["mgp"], "application/vnd.osgi.dp": ["dp"], "application/vnd.osgi.subsystem": ["esa"], "application/vnd.palm": ["pdb", "pqa", "oprc"], "application/vnd.pawaafile": ["paw"], "application/vnd.pg.format": ["str"], "application/vnd.pg.osasli": ["ei6"], "application/vnd.picsel": ["efif"], "application/vnd.pmi.widget": ["wg"], "application/vnd.pocketlearn": ["plf"], "application/vnd.powerbuilder6": ["pbd"], "application/vnd.previewsystems.box": ["box"], "application/vnd.proteus.magazine": ["mgz"], "application/vnd.publishare-delta-tree": ["qps"], "application/vnd.pvi.ptid1": ["ptid"], "application/vnd.pwg-xhtml-print+xml": ["xhtm"], "application/vnd.quark.quarkxpress": ["qxd", "qxt", "qwd", "qwt", "qxl", "qxb"], "application/vnd.rar": ["rar"], "application/vnd.realvnc.bed": ["bed"], "application/vnd.recordare.musicxml": ["mxl"], "application/vnd.recordare.musicxml+xml": ["musicxml"], "application/vnd.rig.cryptonote": ["cryptonote"], "application/vnd.rim.cod": ["cod"], "application/vnd.rn-realmedia": ["rm"], "application/vnd.rn-realmedia-vbr": ["rmvb"], "application/vnd.route66.link66+xml": ["link66"], "application/vnd.sailingtracker.track": ["st"], "application/vnd.seemail": ["see"], "application/vnd.sema": ["sema"], "application/vnd.semd": ["semd"], "application/vnd.semf": ["semf"], "application/vnd.shana.informed.formdata": ["ifm"], "application/vnd.shana.informed.formtemplate": ["itp"], "application/vnd.shana.informed.interchange": ["iif"], "application/vnd.shana.informed.package": ["ipk"], "application/vnd.simtech-mindmapper": ["twd", "twds"], "application/vnd.smaf": ["mmf"], "application/vnd.smart.teacher": ["teacher"], "application/vnd.software602.filler.form+xml": ["fo"], "application/vnd.solent.sdkm+xml": ["sdkm", "sdkd"], "application/vnd.spotfire.dxp": ["dxp"], "application/vnd.spotfire.sfs": ["sfs"], "application/vnd.stardivision.calc": ["sdc"], "application/vnd.stardivision.draw": ["sda"], "application/vnd.stardivision.impress": ["sdd"], "application/vnd.stardivision.math": ["smf"], "application/vnd.stardivision.writer": ["sdw", "vor"], "application/vnd.stardivision.writer-global": ["sgl"], "application/vnd.stepmania.package": ["smzip"], "application/vnd.stepmania.stepchart": ["sm"], "application/vnd.sun.wadl+xml": ["wadl"], "application/vnd.sun.xml.calc": ["sxc"], "application/vnd.sun.xml.calc.template": ["stc"], "application/vnd.sun.xml.draw": ["sxd"], "application/vnd.sun.xml.draw.template": ["std"], "application/vnd.sun.xml.impress": ["sxi"], "application/vnd.sun.xml.impress.template": ["sti"], "application/vnd.sun.xml.math": ["sxm"], "application/vnd.sun.xml.writer": ["sxw"], "application/vnd.sun.xml.writer.global": ["sxg"], "application/vnd.sun.xml.writer.template": ["stw"], "application/vnd.sus-calendar": ["sus", "susp"], "application/vnd.svd": ["svd"], "application/vnd.symbian.install": ["sis", "sisx"], "application/vnd.syncml+xml": ["xsm"], "application/vnd.syncml.dm+wbxml": ["bdm"], "application/vnd.syncml.dm+xml": ["xdm"], "application/vnd.syncml.dmddf+xml": ["ddf"], "application/vnd.tao.intent-module-archive": ["tao"], "application/vnd.tcpdump.pcap": ["pcap", "cap", "dmp"], "application/vnd.tmobile-livetv": ["tmo"], "application/vnd.trid.tpt": ["tpt"], "application/vnd.triscape.mxs": ["mxs"], "application/vnd.trueapp": ["tra"], "application/vnd.ufdl": ["ufd", "ufdl"], "application/vnd.uiq.theme": ["utz"], "application/vnd.umajin": ["umj"], "application/vnd.unity": ["unityweb"], "application/vnd.uoml+xml": ["uoml", "uo"], "application/vnd.vcx": ["vcx"], "application/vnd.visio": ["vsd", "vst", "vss", "vsw"], "application/vnd.visionary": ["vis"], "application/vnd.vsf": ["vsf"], "application/vnd.wap.wbxml": ["wbxml"], "application/vnd.wap.wmlc": ["wmlc"], "application/vnd.wap.wmlscriptc": ["wmlsc"], "application/vnd.webturbo": ["wtb"], "application/vnd.wolfram.player": ["nbp"], "application/vnd.wordperfect": ["wpd"], "application/vnd.wqd": ["wqd"], "application/vnd.wt.stf": ["stf"], "application/vnd.xara": ["xar"], "application/vnd.xfdl": ["xfdl"], "application/vnd.yamaha.hv-dic": ["hvd"], "application/vnd.yamaha.hv-script": ["hvs"], "application/vnd.yamaha.hv-voice": ["hvp"], "application/vnd.yamaha.openscoreformat": ["osf"], "application/vnd.yamaha.openscoreformat.osfpvg+xml": ["osfpvg"], "application/vnd.yamaha.smaf-audio": ["saf"], "application/vnd.yamaha.smaf-phrase": ["spf"], "application/vnd.yellowriver-custom-menu": ["cmp"], "application/vnd.zul": ["zir", "zirz"], "application/vnd.zzazz.deck+xml": ["zaz"], "application/x-7z-compressed": ["7z"], "application/x-abiword": ["abw"], "application/x-ace-compressed": ["ace"], "application/x-apple-diskimage": ["*dmg"], "application/x-arj": ["arj"], "application/x-authorware-bin": ["aab", "x32", "u32", "vox"], "application/x-authorware-map": ["aam"], "application/x-authorware-seg": ["aas"], "application/x-bcpio": ["bcpio"], "application/x-bdoc": ["*bdoc"], "application/x-bittorrent": ["torrent"], "application/x-blorb": ["blb", "blorb"], "application/x-bzip": ["bz"], "application/x-bzip2": ["bz2", "boz"], "application/x-cbr": ["cbr", "cba", "cbt", "cbz", "cb7"], "application/x-cdlink": ["vcd"], "application/x-cfs-compressed": ["cfs"], "application/x-chat": ["chat"], "application/x-chess-pgn": ["pgn"], "application/x-chrome-extension": ["crx"], "application/x-cocoa": ["cco"], "application/x-conference": ["nsc"], "application/x-cpio": ["cpio"], "application/x-csh": ["csh"], "application/x-debian-package": ["*deb", "udeb"], "application/x-dgc-compressed": ["dgc"], "application/x-director": ["dir", "dcr", "dxr", "cst", "cct", "cxt", "w3d", "fgd", "swa"], "application/x-doom": ["wad"], "application/x-dtbncx+xml": ["ncx"], "application/x-dtbook+xml": ["dtb"], "application/x-dtbresource+xml": ["res"], "application/x-dvi": ["dvi"], "application/x-envoy": ["evy"], "application/x-eva": ["eva"], "application/x-font-bdf": ["bdf"], "application/x-font-ghostscript": ["gsf"], "application/x-font-linux-psf": ["psf"], "application/x-font-pcf": ["pcf"], "application/x-font-snf": ["snf"], "application/x-font-type1": ["pfa", "pfb", "pfm", "afm"], "application/x-freearc": ["arc"], "application/x-futuresplash": ["spl"], "application/x-gca-compressed": ["gca"], "application/x-glulx": ["ulx"], "application/x-gnumeric": ["gnumeric"], "application/x-gramps-xml": ["gramps"], "application/x-gtar": ["gtar"], "application/x-hdf": ["hdf"], "application/x-httpd-php": ["php"], "application/x-install-instructions": ["install"], "application/x-iso9660-image": ["*iso"], "application/x-iwork-keynote-sffkey": ["*key"], "application/x-iwork-numbers-sffnumbers": ["*numbers"], "application/x-iwork-pages-sffpages": ["*pages"], "application/x-java-archive-diff": ["jardiff"], "application/x-java-jnlp-file": ["jnlp"], "application/x-keepass2": ["kdbx"], "application/x-latex": ["latex"], "application/x-lua-bytecode": ["luac"], "application/x-lzh-compressed": ["lzh", "lha"], "application/x-makeself": ["run"], "application/x-mie": ["mie"], "application/x-mobipocket-ebook": ["*prc", "mobi"], "application/x-ms-application": ["application"], "application/x-ms-shortcut": ["lnk"], "application/x-ms-wmd": ["wmd"], "application/x-ms-wmz": ["wmz"], "application/x-ms-xbap": ["xbap"], "application/x-msaccess": ["mdb"], "application/x-msbinder": ["obd"], "application/x-mscardfile": ["crd"], "application/x-msclip": ["clp"], "application/x-msdos-program": ["*exe"], "application/x-msdownload": ["*exe", "*dll", "com", "bat", "*msi"], "application/x-msmediaview": ["mvb", "m13", "m14"], "application/x-msmetafile": ["*wmf", "*wmz", "*emf", "emz"], "application/x-msmoney": ["mny"], "application/x-mspublisher": ["pub"], "application/x-msschedule": ["scd"], "application/x-msterminal": ["trm"], "application/x-mswrite": ["wri"], "application/x-netcdf": ["nc", "cdf"], "application/x-ns-proxy-autoconfig": ["pac"], "application/x-nzb": ["nzb"], "application/x-perl": ["pl", "pm"], "application/x-pilot": ["*prc", "*pdb"], "application/x-pkcs12": ["p12", "pfx"], "application/x-pkcs7-certificates": ["p7b", "spc"], "application/x-pkcs7-certreqresp": ["p7r"], "application/x-rar-compressed": ["*rar"], "application/x-redhat-package-manager": ["rpm"], "application/x-research-info-systems": ["ris"], "application/x-sea": ["sea"], "application/x-sh": ["sh"], "application/x-shar": ["shar"], "application/x-shockwave-flash": ["swf"], "application/x-silverlight-app": ["xap"], "application/x-sql": ["*sql"], "application/x-stuffit": ["sit"], "application/x-stuffitx": ["sitx"], "application/x-subrip": ["srt"], "application/x-sv4cpio": ["sv4cpio"], "application/x-sv4crc": ["sv4crc"], "application/x-t3vm-image": ["t3"], "application/x-tads": ["gam"], "application/x-tar": ["tar"], "application/x-tcl": ["tcl", "tk"], "application/x-tex": ["tex"], "application/x-tex-tfm": ["tfm"], "application/x-texinfo": ["texinfo", "texi"], "application/x-tgif": ["*obj"], "application/x-ustar": ["ustar"], "application/x-virtualbox-hdd": ["hdd"], "application/x-virtualbox-ova": ["ova"], "application/x-virtualbox-ovf": ["ovf"], "application/x-virtualbox-vbox": ["vbox"], "application/x-virtualbox-vbox-extpack": ["vbox-extpack"], "application/x-virtualbox-vdi": ["vdi"], "application/x-virtualbox-vhd": ["vhd"], "application/x-virtualbox-vmdk": ["vmdk"], "application/x-wais-source": ["src"], "application/x-web-app-manifest+json": ["webapp"], "application/x-x509-ca-cert": ["der", "crt", "pem"], "application/x-xfig": ["fig"], "application/x-xliff+xml": ["*xlf"], "application/x-xpinstall": ["xpi"], "application/x-xz": ["xz"], "application/x-zmachine": ["z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8"], "audio/vnd.dece.audio": ["uva", "uvva"], "audio/vnd.digital-winds": ["eol"], "audio/vnd.dra": ["dra"], "audio/vnd.dts": ["dts"], "audio/vnd.dts.hd": ["dtshd"], "audio/vnd.lucent.voice": ["lvp"], "audio/vnd.ms-playready.media.pya": ["pya"], "audio/vnd.nuera.ecelp4800": ["ecelp4800"], "audio/vnd.nuera.ecelp7470": ["ecelp7470"], "audio/vnd.nuera.ecelp9600": ["ecelp9600"], "audio/vnd.rip": ["rip"], "audio/x-aac": ["*aac"], "audio/x-aiff": ["aif", "aiff", "aifc"], "audio/x-caf": ["caf"], "audio/x-flac": ["flac"], "audio/x-m4a": ["*m4a"], "audio/x-matroska": ["mka"], "audio/x-mpegurl": ["m3u"], "audio/x-ms-wax": ["wax"], "audio/x-ms-wma": ["wma"], "audio/x-pn-realaudio": ["ram", "ra"], "audio/x-pn-realaudio-plugin": ["rmp"], "audio/x-realaudio": ["*ra"], "audio/x-wav": ["*wav"], "chemical/x-cdx": ["cdx"], "chemical/x-cif": ["cif"], "chemical/x-cmdf": ["cmdf"], "chemical/x-cml": ["cml"], "chemical/x-csml": ["csml"], "chemical/x-xyz": ["xyz"], "image/prs.btif": ["btif", "btf"], "image/prs.pti": ["pti"], "image/vnd.adobe.photoshop": ["psd"], "image/vnd.airzip.accelerator.azv": ["azv"], "image/vnd.dece.graphic": ["uvi", "uvvi", "uvg", "uvvg"], "image/vnd.djvu": ["djvu", "djv"], "image/vnd.dvb.subtitle": ["*sub"], "image/vnd.dwg": ["dwg"], "image/vnd.dxf": ["dxf"], "image/vnd.fastbidsheet": ["fbs"], "image/vnd.fpx": ["fpx"], "image/vnd.fst": ["fst"], "image/vnd.fujixerox.edmics-mmr": ["mmr"], "image/vnd.fujixerox.edmics-rlc": ["rlc"], "image/vnd.microsoft.icon": ["ico"], "image/vnd.ms-dds": ["dds"], "image/vnd.ms-modi": ["mdi"], "image/vnd.ms-photo": ["wdp"], "image/vnd.net-fpx": ["npx"], "image/vnd.pco.b16": ["b16"], "image/vnd.tencent.tap": ["tap"], "image/vnd.valve.source.texture": ["vtf"], "image/vnd.wap.wbmp": ["wbmp"], "image/vnd.xiff": ["xif"], "image/vnd.zbrush.pcx": ["pcx"], "image/x-3ds": ["3ds"], "image/x-cmu-raster": ["ras"], "image/x-cmx": ["cmx"], "image/x-freehand": ["fh", "fhc", "fh4", "fh5", "fh7"], "image/x-icon": ["*ico"], "image/x-jng": ["jng"], "image/x-mrsid-image": ["sid"], "image/x-ms-bmp": ["*bmp"], "image/x-pcx": ["*pcx"], "image/x-pict": ["pic", "pct"], "image/x-portable-anymap": ["pnm"], "image/x-portable-bitmap": ["pbm"], "image/x-portable-graymap": ["pgm"], "image/x-portable-pixmap": ["ppm"], "image/x-rgb": ["rgb"], "image/x-tga": ["tga"], "image/x-xbitmap": ["xbm"], "image/x-xpixmap": ["xpm"], "image/x-xwindowdump": ["xwd"], "message/vnd.wfa.wsc": ["wsc"], "model/vnd.cld": ["cld"], "model/vnd.collada+xml": ["dae"], "model/vnd.dwf": ["dwf"], "model/vnd.gdl": ["gdl"], "model/vnd.gtw": ["gtw"], "model/vnd.mts": ["mts"], "model/vnd.opengex": ["ogex"], "model/vnd.parasolid.transmit.binary": ["x_b"], "model/vnd.parasolid.transmit.text": ["x_t"], "model/vnd.pytha.pyox": ["pyo", "pyox"], "model/vnd.sap.vds": ["vds"], "model/vnd.usda": ["usda"], "model/vnd.usdz+zip": ["usdz"], "model/vnd.valve.source.compiled-map": ["bsp"], "model/vnd.vtu": ["vtu"], "text/prs.lines.tag": ["dsc"], "text/vnd.curl": ["curl"], "text/vnd.curl.dcurl": ["dcurl"], "text/vnd.curl.mcurl": ["mcurl"], "text/vnd.curl.scurl": ["scurl"], "text/vnd.dvb.subtitle": ["sub"], "text/vnd.familysearch.gedcom": ["ged"], "text/vnd.fly": ["fly"], "text/vnd.fmi.flexstor": ["flx"], "text/vnd.graphviz": ["gv"], "text/vnd.in3d.3dml": ["3dml"], "text/vnd.in3d.spot": ["spot"], "text/vnd.sun.j2me.app-descriptor": ["jad"], "text/vnd.wap.wml": ["wml"], "text/vnd.wap.wmlscript": ["wmls"], "text/x-asm": ["s", "asm"], "text/x-c": ["c", "cc", "cxx", "cpp", "h", "hh", "dic"], "text/x-component": ["htc"], "text/x-fortran": ["f", "for", "f77", "f90"], "text/x-handlebars-template": ["hbs"], "text/x-java-source": ["java"], "text/x-lua": ["lua"], "text/x-markdown": ["mkd"], "text/x-nfo": ["nfo"], "text/x-opml": ["opml"], "text/x-org": ["*org"], "text/x-pascal": ["p", "pas"], "text/x-processing": ["pde"], "text/x-sass": ["sass"], "text/x-scss": ["scss"], "text/x-setext": ["etx"], "text/x-sfv": ["sfv"], "text/x-suse-ymp": ["ymp"], "text/x-uuencode": ["uu"], "text/x-vcalendar": ["vcs"], "text/x-vcard": ["vcf"], "video/vnd.dece.hd": ["uvh", "uvvh"], "video/vnd.dece.mobile": ["uvm", "uvvm"], "video/vnd.dece.pd": ["uvp", "uvvp"], "video/vnd.dece.sd": ["uvs", "uvvs"], "video/vnd.dece.video": ["uvv", "uvvv"], "video/vnd.dvb.file": ["dvb"], "video/vnd.fvt": ["fvt"], "video/vnd.mpegurl": ["mxu", "m4u"], "video/vnd.ms-playready.media.pyv": ["pyv"], "video/vnd.uvvu.mp4": ["uvu", "uvvu"], "video/vnd.vivo": ["viv"], "video/x-f4v": ["f4v"], "video/x-fli": ["fli"], "video/x-flv": ["flv"], "video/x-m4v": ["m4v"], "video/x-matroska": ["mkv", "mk3d", "mks"], "video/x-mng": ["mng"], "video/x-ms-asf": ["asf", "asx"], "video/x-ms-vob": ["vob"], "video/x-ms-wm": ["wm"], "video/x-ms-wmv": ["wmv"], "video/x-ms-wmx": ["wmx"], "video/x-ms-wvx": ["wvx"], "video/x-msvideo": ["avi"], "video/x-sgi-movie": ["movie"], "video/x-smv": ["smv"], "x-conference/x-cooltalk": ["ice"] };
+const types = {
+    'application/prs.cww': ['cww'],
+    'application/prs.xsf+xml': ['xsf'],
+    'application/vnd.1000minds.decision-model+xml': ['1km'],
+    'application/vnd.3gpp.pic-bw-large': ['plb'],
+    'application/vnd.3gpp.pic-bw-small': ['psb'],
+    'application/vnd.3gpp.pic-bw-var': ['pvb'],
+    'application/vnd.3gpp2.tcap': ['tcap'],
+    'application/vnd.3m.post-it-notes': ['pwn'],
+    'application/vnd.accpac.simply.aso': ['aso'],
+    'application/vnd.accpac.simply.imp': ['imp'],
+    'application/vnd.acucobol': ['acu'],
+    'application/vnd.acucorp': ['atc', 'acutc'],
+    'application/vnd.adobe.air-application-installer-package+zip': ['air'],
+    'application/vnd.adobe.formscentral.fcdt': ['fcdt'],
+    'application/vnd.adobe.fxp': ['fxp', 'fxpl'],
+    'application/vnd.adobe.xdp+xml': ['xdp'],
+    'application/vnd.adobe.xfdf': ['*xfdf'],
+    'application/vnd.age': ['age'],
+    'application/vnd.ahead.space': ['ahead'],
+    'application/vnd.airzip.filesecure.azf': ['azf'],
+    'application/vnd.airzip.filesecure.azs': ['azs'],
+    'application/vnd.amazon.ebook': ['azw'],
+    'application/vnd.americandynamics.acc': ['acc'],
+    'application/vnd.amiga.ami': ['ami'],
+    'application/vnd.android.package-archive': ['apk'],
+    'application/vnd.anser-web-certificate-issue-initiation': ['cii'],
+    'application/vnd.anser-web-funds-transfer-initiation': ['fti'],
+    'application/vnd.antix.game-component': ['atx'],
+    'application/vnd.apple.installer+xml': ['mpkg'],
+    'application/vnd.apple.keynote': ['key'],
+    'application/vnd.apple.mpegurl': ['m3u8'],
+    'application/vnd.apple.numbers': ['numbers'],
+    'application/vnd.apple.pages': ['pages'],
+    'application/vnd.apple.pkpass': ['pkpass'],
+    'application/vnd.aristanetworks.swi': ['swi'],
+    'application/vnd.astraea-software.iota': ['iota'],
+    'application/vnd.audiograph': ['aep'],
+    'application/vnd.autodesk.fbx': ['fbx'],
+    'application/vnd.balsamiq.bmml+xml': ['bmml'],
+    'application/vnd.blueice.multipass': ['mpm'],
+    'application/vnd.bmi': ['bmi'],
+    'application/vnd.businessobjects': ['rep'],
+    'application/vnd.chemdraw+xml': ['cdxml'],
+    'application/vnd.chipnuts.karaoke-mmd': ['mmd'],
+    'application/vnd.cinderella': ['cdy'],
+    'application/vnd.citationstyles.style+xml': ['csl'],
+    'application/vnd.claymore': ['cla'],
+    'application/vnd.cloanto.rp9': ['rp9'],
+    'application/vnd.clonk.c4group': ['c4g', 'c4d', 'c4f', 'c4p', 'c4u'],
+    'application/vnd.cluetrust.cartomobile-config': ['c11amc'],
+    'application/vnd.cluetrust.cartomobile-config-pkg': ['c11amz'],
+    'application/vnd.commonspace': ['csp'],
+    'application/vnd.contact.cmsg': ['cdbcmsg'],
+    'application/vnd.cosmocaller': ['cmc'],
+    'application/vnd.crick.clicker': ['clkx'],
+    'application/vnd.crick.clicker.keyboard': ['clkk'],
+    'application/vnd.crick.clicker.palette': ['clkp'],
+    'application/vnd.crick.clicker.template': ['clkt'],
+    'application/vnd.crick.clicker.wordbank': ['clkw'],
+    'application/vnd.criticaltools.wbs+xml': ['wbs'],
+    'application/vnd.ctc-posml': ['pml'],
+    'application/vnd.cups-ppd': ['ppd'],
+    'application/vnd.curl.car': ['car'],
+    'application/vnd.curl.pcurl': ['pcurl'],
+    'application/vnd.dart': ['dart'],
+    'application/vnd.data-vision.rdz': ['rdz'],
+    'application/vnd.dbf': ['dbf'],
+    'application/vnd.dcmp+xml': ['dcmp'],
+    'application/vnd.dece.data': ['uvf', 'uvvf', 'uvd', 'uvvd'],
+    'application/vnd.dece.ttml+xml': ['uvt', 'uvvt'],
+    'application/vnd.dece.unspecified': ['uvx', 'uvvx'],
+    'application/vnd.dece.zip': ['uvz', 'uvvz'],
+    'application/vnd.denovo.fcselayout-link': ['fe_launch'],
+    'application/vnd.dna': ['dna'],
+    'application/vnd.dolby.mlp': ['mlp'],
+    'application/vnd.dpgraph': ['dpg'],
+    'application/vnd.dreamfactory': ['dfac'],
+    'application/vnd.ds-keypoint': ['kpxx'],
+    'application/vnd.dvb.ait': ['ait'],
+    'application/vnd.dvb.service': ['svc'],
+    'application/vnd.dynageo': ['geo'],
+    'application/vnd.ecowin.chart': ['mag'],
+    'application/vnd.enliven': ['nml'],
+    'application/vnd.epson.esf': ['esf'],
+    'application/vnd.epson.msf': ['msf'],
+    'application/vnd.epson.quickanime': ['qam'],
+    'application/vnd.epson.salt': ['slt'],
+    'application/vnd.epson.ssf': ['ssf'],
+    'application/vnd.eszigno3+xml': ['es3', 'et3'],
+    'application/vnd.ezpix-album': ['ez2'],
+    'application/vnd.ezpix-package': ['ez3'],
+    'application/vnd.fdf': ['*fdf'],
+    'application/vnd.fdsn.mseed': ['mseed'],
+    'application/vnd.fdsn.seed': ['seed', 'dataless'],
+    'application/vnd.flographit': ['gph'],
+    'application/vnd.fluxtime.clip': ['ftc'],
+    'application/vnd.framemaker': ['fm', 'frame', 'maker', 'book'],
+    'application/vnd.frogans.fnc': ['fnc'],
+    'application/vnd.frogans.ltf': ['ltf'],
+    'application/vnd.fsc.weblaunch': ['fsc'],
+    'application/vnd.fujitsu.oasys': ['oas'],
+    'application/vnd.fujitsu.oasys2': ['oa2'],
+    'application/vnd.fujitsu.oasys3': ['oa3'],
+    'application/vnd.fujitsu.oasysgp': ['fg5'],
+    'application/vnd.fujitsu.oasysprs': ['bh2'],
+    'application/vnd.fujixerox.ddd': ['ddd'],
+    'application/vnd.fujixerox.docuworks': ['xdw'],
+    'application/vnd.fujixerox.docuworks.binder': ['xbd'],
+    'application/vnd.fuzzysheet': ['fzs'],
+    'application/vnd.genomatix.tuxedo': ['txd'],
+    'application/vnd.geogebra.file': ['ggb'],
+    'application/vnd.geogebra.slides': ['ggs'],
+    'application/vnd.geogebra.tool': ['ggt'],
+    'application/vnd.geometry-explorer': ['gex', 'gre'],
+    'application/vnd.geonext': ['gxt'],
+    'application/vnd.geoplan': ['g2w'],
+    'application/vnd.geospace': ['g3w'],
+    'application/vnd.gmx': ['gmx'],
+    'application/vnd.google-apps.document': ['gdoc'],
+    'application/vnd.google-apps.drawing': ['gdraw'],
+    'application/vnd.google-apps.form': ['gform'],
+    'application/vnd.google-apps.jam': ['gjam'],
+    'application/vnd.google-apps.map': ['gmap'],
+    'application/vnd.google-apps.presentation': ['gslides'],
+    'application/vnd.google-apps.script': ['gscript'],
+    'application/vnd.google-apps.site': ['gsite'],
+    'application/vnd.google-apps.spreadsheet': ['gsheet'],
+    'application/vnd.google-earth.kml+xml': ['kml'],
+    'application/vnd.google-earth.kmz': ['kmz'],
+    'application/vnd.gov.sk.xmldatacontainer+xml': ['xdcf'],
+    'application/vnd.grafeq': ['gqf', 'gqs'],
+    'application/vnd.groove-account': ['gac'],
+    'application/vnd.groove-help': ['ghf'],
+    'application/vnd.groove-identity-message': ['gim'],
+    'application/vnd.groove-injector': ['grv'],
+    'application/vnd.groove-tool-message': ['gtm'],
+    'application/vnd.groove-tool-template': ['tpl'],
+    'application/vnd.groove-vcard': ['vcg'],
+    'application/vnd.hal+xml': ['hal'],
+    'application/vnd.handheld-entertainment+xml': ['zmm'],
+    'application/vnd.hbci': ['hbci'],
+    'application/vnd.hhe.lesson-player': ['les'],
+    'application/vnd.hp-hpgl': ['hpgl'],
+    'application/vnd.hp-hpid': ['hpid'],
+    'application/vnd.hp-hps': ['hps'],
+    'application/vnd.hp-jlyt': ['jlt'],
+    'application/vnd.hp-pcl': ['pcl'],
+    'application/vnd.hp-pclxl': ['pclxl'],
+    'application/vnd.hydrostatix.sof-data': ['sfd-hdstx'],
+    'application/vnd.ibm.minipay': ['mpy'],
+    'application/vnd.ibm.modcap': ['afp', 'listafp', 'list3820'],
+    'application/vnd.ibm.rights-management': ['irm'],
+    'application/vnd.ibm.secure-container': ['sc'],
+    'application/vnd.iccprofile': ['icc', 'icm'],
+    'application/vnd.igloader': ['igl'],
+    'application/vnd.immervision-ivp': ['ivp'],
+    'application/vnd.immervision-ivu': ['ivu'],
+    'application/vnd.insors.igm': ['igm'],
+    'application/vnd.intercon.formnet': ['xpw', 'xpx'],
+    'application/vnd.intergeo': ['i2g'],
+    'application/vnd.intu.qbo': ['qbo'],
+    'application/vnd.intu.qfx': ['qfx'],
+    'application/vnd.ipunplugged.rcprofile': ['rcprofile'],
+    'application/vnd.irepository.package+xml': ['irp'],
+    'application/vnd.is-xpr': ['xpr'],
+    'application/vnd.isac.fcs': ['fcs'],
+    'application/vnd.jam': ['jam'],
+    'application/vnd.jcp.javame.midlet-rms': ['rms'],
+    'application/vnd.jisp': ['jisp'],
+    'application/vnd.joost.joda-archive': ['joda'],
+    'application/vnd.kahootz': ['ktz', 'ktr'],
+    'application/vnd.kde.karbon': ['karbon'],
+    'application/vnd.kde.kchart': ['chrt'],
+    'application/vnd.kde.kformula': ['kfo'],
+    'application/vnd.kde.kivio': ['flw'],
+    'application/vnd.kde.kontour': ['kon'],
+    'application/vnd.kde.kpresenter': ['kpr', 'kpt'],
+    'application/vnd.kde.kspread': ['ksp'],
+    'application/vnd.kde.kword': ['kwd', 'kwt'],
+    'application/vnd.kenameaapp': ['htke'],
+    'application/vnd.kidspiration': ['kia'],
+    'application/vnd.kinar': ['kne', 'knp'],
+    'application/vnd.koan': ['skp', 'skd', 'skt', 'skm'],
+    'application/vnd.kodak-descriptor': ['sse'],
+    'application/vnd.las.las+xml': ['lasxml'],
+    'application/vnd.llamagraphics.life-balance.desktop': ['lbd'],
+    'application/vnd.llamagraphics.life-balance.exchange+xml': ['lbe'],
+    'application/vnd.lotus-1-2-3': ['123'],
+    'application/vnd.lotus-approach': ['apr'],
+    'application/vnd.lotus-freelance': ['pre'],
+    'application/vnd.lotus-notes': ['nsf'],
+    'application/vnd.lotus-organizer': ['org'],
+    'application/vnd.lotus-screencam': ['scm'],
+    'application/vnd.lotus-wordpro': ['lwp'],
+    'application/vnd.macports.portpkg': ['portpkg'],
+    'application/vnd.mapbox-vector-tile': ['mvt'],
+    'application/vnd.mcd': ['mcd'],
+    'application/vnd.medcalcdata': ['mc1'],
+    'application/vnd.mediastation.cdkey': ['cdkey'],
+    'application/vnd.mfer': ['mwf'],
+    'application/vnd.mfmp': ['mfm'],
+    'application/vnd.micrografx.flo': ['flo'],
+    'application/vnd.micrografx.igx': ['igx'],
+    'application/vnd.mif': ['mif'],
+    'application/vnd.mobius.daf': ['daf'],
+    'application/vnd.mobius.dis': ['dis'],
+    'application/vnd.mobius.mbk': ['mbk'],
+    'application/vnd.mobius.mqy': ['mqy'],
+    'application/vnd.mobius.msl': ['msl'],
+    'application/vnd.mobius.plc': ['plc'],
+    'application/vnd.mobius.txf': ['txf'],
+    'application/vnd.mophun.application': ['mpn'],
+    'application/vnd.mophun.certificate': ['mpc'],
+    'application/vnd.mozilla.xul+xml': ['xul'],
+    'application/vnd.ms-artgalry': ['cil'],
+    'application/vnd.ms-cab-compressed': ['cab'],
+    'application/vnd.ms-excel': ['xls', 'xlm', 'xla', 'xlc', 'xlt', 'xlw'],
+    'application/vnd.ms-excel.addin.macroenabled.12': ['xlam'],
+    'application/vnd.ms-excel.sheet.binary.macroenabled.12': ['xlsb'],
+    'application/vnd.ms-excel.sheet.macroenabled.12': ['xlsm'],
+    'application/vnd.ms-excel.template.macroenabled.12': ['xltm'],
+    'application/vnd.ms-fontobject': ['eot'],
+    'application/vnd.ms-htmlhelp': ['chm'],
+    'application/vnd.ms-ims': ['ims'],
+    'application/vnd.ms-lrm': ['lrm'],
+    'application/vnd.ms-officetheme': ['thmx'],
+    'application/vnd.ms-outlook': ['msg'],
+    'application/vnd.ms-pki.seccat': ['cat'],
+    'application/vnd.ms-pki.stl': ['*stl'],
+    'application/vnd.ms-powerpoint': ['ppt', 'pps', 'pot'],
+    'application/vnd.ms-powerpoint.addin.macroenabled.12': ['ppam'],
+    'application/vnd.ms-powerpoint.presentation.macroenabled.12': ['pptm'],
+    'application/vnd.ms-powerpoint.slide.macroenabled.12': ['sldm'],
+    'application/vnd.ms-powerpoint.slideshow.macroenabled.12': ['ppsm'],
+    'application/vnd.ms-powerpoint.template.macroenabled.12': ['potm'],
+    'application/vnd.ms-project': ['*mpp', 'mpt'],
+    'application/vnd.ms-visio.viewer': ['vdx'],
+    'application/vnd.ms-word.document.macroenabled.12': ['docm'],
+    'application/vnd.ms-word.template.macroenabled.12': ['dotm'],
+    'application/vnd.ms-works': ['wps', 'wks', 'wcm', 'wdb'],
+    'application/vnd.ms-wpl': ['wpl'],
+    'application/vnd.ms-xpsdocument': ['xps'],
+    'application/vnd.mseq': ['mseq'],
+    'application/vnd.musician': ['mus'],
+    'application/vnd.muvee.style': ['msty'],
+    'application/vnd.mynfc': ['taglet'],
+    'application/vnd.nato.bindingdataobject+xml': ['bdo'],
+    'application/vnd.neurolanguage.nlu': ['nlu'],
+    'application/vnd.nitf': ['ntf', 'nitf'],
+    'application/vnd.noblenet-directory': ['nnd'],
+    'application/vnd.noblenet-sealer': ['nns'],
+    'application/vnd.noblenet-web': ['nnw'],
+    'application/vnd.nokia.n-gage.ac+xml': ['*ac'],
+    'application/vnd.nokia.n-gage.data': ['ngdat'],
+    'application/vnd.nokia.n-gage.symbian.install': ['n-gage'],
+    'application/vnd.nokia.radio-preset': ['rpst'],
+    'application/vnd.nokia.radio-presets': ['rpss'],
+    'application/vnd.novadigm.edm': ['edm'],
+    'application/vnd.novadigm.edx': ['edx'],
+    'application/vnd.novadigm.ext': ['ext'],
+    'application/vnd.oasis.opendocument.chart': ['odc'],
+    'application/vnd.oasis.opendocument.chart-template': ['otc'],
+    'application/vnd.oasis.opendocument.database': ['odb'],
+    'application/vnd.oasis.opendocument.formula': ['odf'],
+    'application/vnd.oasis.opendocument.formula-template': ['odft'],
+    'application/vnd.oasis.opendocument.graphics': ['odg'],
+    'application/vnd.oasis.opendocument.graphics-template': ['otg'],
+    'application/vnd.oasis.opendocument.image': ['odi'],
+    'application/vnd.oasis.opendocument.image-template': ['oti'],
+    'application/vnd.oasis.opendocument.presentation': ['odp'],
+    'application/vnd.oasis.opendocument.presentation-template': ['otp'],
+    'application/vnd.oasis.opendocument.spreadsheet': ['ods'],
+    'application/vnd.oasis.opendocument.spreadsheet-template': ['ots'],
+    'application/vnd.oasis.opendocument.text': ['odt'],
+    'application/vnd.oasis.opendocument.text-master': ['odm'],
+    'application/vnd.oasis.opendocument.text-template': ['ott'],
+    'application/vnd.oasis.opendocument.text-web': ['oth'],
+    'application/vnd.olpc-sugar': ['xo'],
+    'application/vnd.oma.dd2+xml': ['dd2'],
+    'application/vnd.openblox.game+xml': ['obgx'],
+    'application/vnd.openofficeorg.extension': ['oxt'],
+    'application/vnd.openstreetmap.data+xml': ['osm'],
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': [
+        'pptx',
+    ],
+    'application/vnd.openxmlformats-officedocument.presentationml.slide': [
+        'sldx',
+    ],
+    'application/vnd.openxmlformats-officedocument.presentationml.slideshow': [
+        'ppsx',
+    ],
+    'application/vnd.openxmlformats-officedocument.presentationml.template': [
+        'potx',
+    ],
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['xlsx'],
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.template': [
+        'xltx',
+    ],
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [
+        'docx',
+    ],
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.template': [
+        'dotx',
+    ],
+    'application/vnd.osgeo.mapguide.package': ['mgp'],
+    'application/vnd.osgi.dp': ['dp'],
+    'application/vnd.osgi.subsystem': ['esa'],
+    'application/vnd.palm': ['pdb', 'pqa', 'oprc'],
+    'application/vnd.pawaafile': ['paw'],
+    'application/vnd.pg.format': ['str'],
+    'application/vnd.pg.osasli': ['ei6'],
+    'application/vnd.picsel': ['efif'],
+    'application/vnd.pmi.widget': ['wg'],
+    'application/vnd.pocketlearn': ['plf'],
+    'application/vnd.powerbuilder6': ['pbd'],
+    'application/vnd.previewsystems.box': ['box'],
+    'application/vnd.procrate.brushset': ['brushset'],
+    'application/vnd.procreate.brush': ['brush'],
+    'application/vnd.procreate.dream': ['drm'],
+    'application/vnd.proteus.magazine': ['mgz'],
+    'application/vnd.publishare-delta-tree': ['qps'],
+    'application/vnd.pvi.ptid1': ['ptid'],
+    'application/vnd.pwg-xhtml-print+xml': ['xhtm'],
+    'application/vnd.quark.quarkxpress': [
+        'qxd',
+        'qxt',
+        'qwd',
+        'qwt',
+        'qxl',
+        'qxb',
+    ],
+    'application/vnd.rar': ['rar'],
+    'application/vnd.realvnc.bed': ['bed'],
+    'application/vnd.recordare.musicxml': ['mxl'],
+    'application/vnd.recordare.musicxml+xml': ['musicxml'],
+    'application/vnd.rig.cryptonote': ['cryptonote'],
+    'application/vnd.rim.cod': ['cod'],
+    'application/vnd.rn-realmedia': ['rm'],
+    'application/vnd.rn-realmedia-vbr': ['rmvb'],
+    'application/vnd.route66.link66+xml': ['link66'],
+    'application/vnd.sailingtracker.track': ['st'],
+    'application/vnd.seemail': ['see'],
+    'application/vnd.sema': ['sema'],
+    'application/vnd.semd': ['semd'],
+    'application/vnd.semf': ['semf'],
+    'application/vnd.shana.informed.formdata': ['ifm'],
+    'application/vnd.shana.informed.formtemplate': ['itp'],
+    'application/vnd.shana.informed.interchange': ['iif'],
+    'application/vnd.shana.informed.package': ['ipk'],
+    'application/vnd.simtech-mindmapper': ['twd', 'twds'],
+    'application/vnd.smaf': ['mmf'],
+    'application/vnd.smart.teacher': ['teacher'],
+    'application/vnd.software602.filler.form+xml': ['fo'],
+    'application/vnd.solent.sdkm+xml': ['sdkm', 'sdkd'],
+    'application/vnd.spotfire.dxp': ['dxp'],
+    'application/vnd.spotfire.sfs': ['sfs'],
+    'application/vnd.stardivision.calc': ['sdc'],
+    'application/vnd.stardivision.draw': ['sda'],
+    'application/vnd.stardivision.impress': ['sdd'],
+    'application/vnd.stardivision.math': ['smf'],
+    'application/vnd.stardivision.writer': ['sdw', 'vor'],
+    'application/vnd.stardivision.writer-global': ['sgl'],
+    'application/vnd.stepmania.package': ['smzip'],
+    'application/vnd.stepmania.stepchart': ['sm'],
+    'application/vnd.sun.wadl+xml': ['wadl'],
+    'application/vnd.sun.xml.calc': ['sxc'],
+    'application/vnd.sun.xml.calc.template': ['stc'],
+    'application/vnd.sun.xml.draw': ['sxd'],
+    'application/vnd.sun.xml.draw.template': ['std'],
+    'application/vnd.sun.xml.impress': ['sxi'],
+    'application/vnd.sun.xml.impress.template': ['sti'],
+    'application/vnd.sun.xml.math': ['sxm'],
+    'application/vnd.sun.xml.writer': ['sxw'],
+    'application/vnd.sun.xml.writer.global': ['sxg'],
+    'application/vnd.sun.xml.writer.template': ['stw'],
+    'application/vnd.sus-calendar': ['sus', 'susp'],
+    'application/vnd.svd': ['svd'],
+    'application/vnd.symbian.install': ['sis', 'sisx'],
+    'application/vnd.syncml+xml': ['xsm'],
+    'application/vnd.syncml.dm+wbxml': ['bdm'],
+    'application/vnd.syncml.dm+xml': ['xdm'],
+    'application/vnd.syncml.dmddf+xml': ['ddf'],
+    'application/vnd.tao.intent-module-archive': ['tao'],
+    'application/vnd.tcpdump.pcap': ['pcap', 'cap', 'dmp'],
+    'application/vnd.tmobile-livetv': ['tmo'],
+    'application/vnd.trid.tpt': ['tpt'],
+    'application/vnd.triscape.mxs': ['mxs'],
+    'application/vnd.trueapp': ['tra'],
+    'application/vnd.ufdl': ['ufd', 'ufdl'],
+    'application/vnd.uiq.theme': ['utz'],
+    'application/vnd.umajin': ['umj'],
+    'application/vnd.unity': ['unityweb'],
+    'application/vnd.uoml+xml': ['uoml', 'uo'],
+    'application/vnd.vcx': ['vcx'],
+    'application/vnd.visio': ['vsd', 'vst', 'vss', 'vsw', 'vsdx', 'vtx'],
+    'application/vnd.visionary': ['vis'],
+    'application/vnd.vsf': ['vsf'],
+    'application/vnd.wap.wbxml': ['wbxml'],
+    'application/vnd.wap.wmlc': ['wmlc'],
+    'application/vnd.wap.wmlscriptc': ['wmlsc'],
+    'application/vnd.webturbo': ['wtb'],
+    'application/vnd.wolfram.player': ['nbp'],
+    'application/vnd.wordperfect': ['wpd'],
+    'application/vnd.wqd': ['wqd'],
+    'application/vnd.wt.stf': ['stf'],
+    'application/vnd.xara': ['xar'],
+    'application/vnd.xfdl': ['xfdl'],
+    'application/vnd.yamaha.hv-dic': ['hvd'],
+    'application/vnd.yamaha.hv-script': ['hvs'],
+    'application/vnd.yamaha.hv-voice': ['hvp'],
+    'application/vnd.yamaha.openscoreformat': ['osf'],
+    'application/vnd.yamaha.openscoreformat.osfpvg+xml': ['osfpvg'],
+    'application/vnd.yamaha.smaf-audio': ['saf'],
+    'application/vnd.yamaha.smaf-phrase': ['spf'],
+    'application/vnd.yellowriver-custom-menu': ['cmp'],
+    'application/vnd.zul': ['zir', 'zirz'],
+    'application/vnd.zzazz.deck+xml': ['zaz'],
+    'application/x-7z-compressed': ['7z'],
+    'application/x-abiword': ['abw'],
+    'application/x-ace-compressed': ['ace'],
+    'application/x-apple-diskimage': ['*dmg'],
+    'application/x-arj': ['arj'],
+    'application/x-authorware-bin': ['aab', 'x32', 'u32', 'vox'],
+    'application/x-authorware-map': ['aam'],
+    'application/x-authorware-seg': ['aas'],
+    'application/x-bcpio': ['bcpio'],
+    'application/x-bdoc': ['*bdoc'],
+    'application/x-bittorrent': ['torrent'],
+    'application/x-blender': ['blend'],
+    'application/x-blorb': ['blb', 'blorb'],
+    'application/x-bzip': ['bz'],
+    'application/x-bzip2': ['bz2', 'boz'],
+    'application/x-cbr': ['cbr', 'cba', 'cbt', 'cbz', 'cb7'],
+    'application/x-cdlink': ['vcd'],
+    'application/x-cfs-compressed': ['cfs'],
+    'application/x-chat': ['chat'],
+    'application/x-chess-pgn': ['pgn'],
+    'application/x-chrome-extension': ['crx'],
+    'application/x-cocoa': ['cco'],
+    'application/x-compressed': ['*rar'],
+    'application/x-conference': ['nsc'],
+    'application/x-cpio': ['cpio'],
+    'application/x-csh': ['csh'],
+    'application/x-debian-package': ['*deb', 'udeb'],
+    'application/x-dgc-compressed': ['dgc'],
+    'application/x-director': [
+        'dir',
+        'dcr',
+        'dxr',
+        'cst',
+        'cct',
+        'cxt',
+        'w3d',
+        'fgd',
+        'swa',
+    ],
+    'application/x-doom': ['wad'],
+    'application/x-dtbncx+xml': ['ncx'],
+    'application/x-dtbook+xml': ['dtb'],
+    'application/x-dtbresource+xml': ['res'],
+    'application/x-dvi': ['dvi'],
+    'application/x-envoy': ['evy'],
+    'application/x-eva': ['eva'],
+    'application/x-font-bdf': ['bdf'],
+    'application/x-font-ghostscript': ['gsf'],
+    'application/x-font-linux-psf': ['psf'],
+    'application/x-font-pcf': ['pcf'],
+    'application/x-font-snf': ['snf'],
+    'application/x-font-type1': ['pfa', 'pfb', 'pfm', 'afm'],
+    'application/x-freearc': ['arc'],
+    'application/x-futuresplash': ['spl'],
+    'application/x-gca-compressed': ['gca'],
+    'application/x-glulx': ['ulx'],
+    'application/x-gnumeric': ['gnumeric'],
+    'application/x-gramps-xml': ['gramps'],
+    'application/x-gtar': ['gtar'],
+    'application/x-hdf': ['hdf'],
+    'application/x-httpd-php': ['php'],
+    'application/x-install-instructions': ['install'],
+    'application/x-ipynb+json': ['ipynb'],
+    'application/x-iso9660-image': ['*iso'],
+    'application/x-iwork-keynote-sffkey': ['*key'],
+    'application/x-iwork-numbers-sffnumbers': ['*numbers'],
+    'application/x-iwork-pages-sffpages': ['*pages'],
+    'application/x-java-archive-diff': ['jardiff'],
+    'application/x-java-jnlp-file': ['jnlp'],
+    'application/x-keepass2': ['kdbx'],
+    'application/x-latex': ['latex'],
+    'application/x-lua-bytecode': ['luac'],
+    'application/x-lzh-compressed': ['lzh', 'lha'],
+    'application/x-makeself': ['run'],
+    'application/x-mie': ['mie'],
+    'application/x-mobipocket-ebook': ['*prc', 'mobi'],
+    'application/x-ms-application': ['application'],
+    'application/x-ms-shortcut': ['lnk'],
+    'application/x-ms-wmd': ['wmd'],
+    'application/x-ms-wmz': ['wmz'],
+    'application/x-ms-xbap': ['xbap'],
+    'application/x-msaccess': ['mdb'],
+    'application/x-msbinder': ['obd'],
+    'application/x-mscardfile': ['crd'],
+    'application/x-msclip': ['clp'],
+    'application/x-msdos-program': ['*exe'],
+    'application/x-msdownload': ['*exe', '*dll', 'com', 'bat', '*msi'],
+    'application/x-msmediaview': ['mvb', 'm13', 'm14'],
+    'application/x-msmetafile': ['*wmf', '*wmz', '*emf', 'emz'],
+    'application/x-msmoney': ['mny'],
+    'application/x-mspublisher': ['pub'],
+    'application/x-msschedule': ['scd'],
+    'application/x-msterminal': ['trm'],
+    'application/x-mswrite': ['wri'],
+    'application/x-netcdf': ['nc', 'cdf'],
+    'application/x-ns-proxy-autoconfig': ['pac'],
+    'application/x-nzb': ['nzb'],
+    'application/x-perl': ['pl', 'pm'],
+    'application/x-pilot': ['*prc', '*pdb'],
+    'application/x-pkcs12': ['p12', 'pfx'],
+    'application/x-pkcs7-certificates': ['p7b', 'spc'],
+    'application/x-pkcs7-certreqresp': ['p7r'],
+    'application/x-rar-compressed': ['*rar'],
+    'application/x-redhat-package-manager': ['rpm'],
+    'application/x-research-info-systems': ['ris'],
+    'application/x-sea': ['sea'],
+    'application/x-sh': ['sh'],
+    'application/x-shar': ['shar'],
+    'application/x-shockwave-flash': ['swf'],
+    'application/x-silverlight-app': ['xap'],
+    'application/x-sql': ['*sql'],
+    'application/x-stuffit': ['sit'],
+    'application/x-stuffitx': ['sitx'],
+    'application/x-subrip': ['srt'],
+    'application/x-sv4cpio': ['sv4cpio'],
+    'application/x-sv4crc': ['sv4crc'],
+    'application/x-t3vm-image': ['t3'],
+    'application/x-tads': ['gam'],
+    'application/x-tar': ['tar'],
+    'application/x-tcl': ['tcl', 'tk'],
+    'application/x-tex': ['tex'],
+    'application/x-tex-tfm': ['tfm'],
+    'application/x-texinfo': ['texinfo', 'texi'],
+    'application/x-tgif': ['*obj'],
+    'application/x-ustar': ['ustar'],
+    'application/x-virtualbox-hdd': ['hdd'],
+    'application/x-virtualbox-ova': ['ova'],
+    'application/x-virtualbox-ovf': ['ovf'],
+    'application/x-virtualbox-vbox': ['vbox'],
+    'application/x-virtualbox-vbox-extpack': ['vbox-extpack'],
+    'application/x-virtualbox-vdi': ['vdi'],
+    'application/x-virtualbox-vhd': ['vhd'],
+    'application/x-virtualbox-vmdk': ['vmdk'],
+    'application/x-wais-source': ['src'],
+    'application/x-web-app-manifest+json': ['webapp'],
+    'application/x-x509-ca-cert': ['der', 'crt', 'pem'],
+    'application/x-xfig': ['fig'],
+    'application/x-xliff+xml': ['*xlf'],
+    'application/x-xpinstall': ['xpi'],
+    'application/x-xz': ['xz'],
+    'application/x-zip-compressed': ['*zip'],
+    'application/x-zmachine': ['z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7', 'z8'],
+    'audio/vnd.dece.audio': ['uva', 'uvva'],
+    'audio/vnd.digital-winds': ['eol'],
+    'audio/vnd.dra': ['dra'],
+    'audio/vnd.dts': ['dts'],
+    'audio/vnd.dts.hd': ['dtshd'],
+    'audio/vnd.lucent.voice': ['lvp'],
+    'audio/vnd.ms-playready.media.pya': ['pya'],
+    'audio/vnd.nuera.ecelp4800': ['ecelp4800'],
+    'audio/vnd.nuera.ecelp7470': ['ecelp7470'],
+    'audio/vnd.nuera.ecelp9600': ['ecelp9600'],
+    'audio/vnd.rip': ['rip'],
+    'audio/x-aac': ['*aac'],
+    'audio/x-aiff': ['aif', 'aiff', 'aifc'],
+    'audio/x-caf': ['caf'],
+    'audio/x-flac': ['flac'],
+    'audio/x-m4a': ['*m4a'],
+    'audio/x-matroska': ['mka'],
+    'audio/x-mpegurl': ['m3u'],
+    'audio/x-ms-wax': ['wax'],
+    'audio/x-ms-wma': ['wma'],
+    'audio/x-pn-realaudio': ['ram', 'ra'],
+    'audio/x-pn-realaudio-plugin': ['rmp'],
+    'audio/x-realaudio': ['*ra'],
+    'audio/x-wav': ['*wav'],
+    'chemical/x-cdx': ['cdx'],
+    'chemical/x-cif': ['cif'],
+    'chemical/x-cmdf': ['cmdf'],
+    'chemical/x-cml': ['cml'],
+    'chemical/x-csml': ['csml'],
+    'chemical/x-xyz': ['xyz'],
+    'image/prs.btif': ['btif', 'btf'],
+    'image/prs.pti': ['pti'],
+    'image/vnd.adobe.photoshop': ['psd'],
+    'image/vnd.airzip.accelerator.azv': ['azv'],
+    'image/vnd.blockfact.facti': ['facti'],
+    'image/vnd.dece.graphic': ['uvi', 'uvvi', 'uvg', 'uvvg'],
+    'image/vnd.djvu': ['djvu', 'djv'],
+    'image/vnd.dvb.subtitle': ['*sub'],
+    'image/vnd.dwg': ['dwg'],
+    'image/vnd.dxf': ['dxf'],
+    'image/vnd.fastbidsheet': ['fbs'],
+    'image/vnd.fpx': ['fpx'],
+    'image/vnd.fst': ['fst'],
+    'image/vnd.fujixerox.edmics-mmr': ['mmr'],
+    'image/vnd.fujixerox.edmics-rlc': ['rlc'],
+    'image/vnd.microsoft.icon': ['ico'],
+    'image/vnd.ms-dds': ['dds'],
+    'image/vnd.ms-modi': ['mdi'],
+    'image/vnd.ms-photo': ['wdp'],
+    'image/vnd.net-fpx': ['npx'],
+    'image/vnd.pco.b16': ['b16'],
+    'image/vnd.tencent.tap': ['tap'],
+    'image/vnd.valve.source.texture': ['vtf'],
+    'image/vnd.wap.wbmp': ['wbmp'],
+    'image/vnd.xiff': ['xif'],
+    'image/vnd.zbrush.pcx': ['pcx'],
+    'image/x-3ds': ['3ds'],
+    'image/x-adobe-dng': ['dng'],
+    'image/x-cmu-raster': ['ras'],
+    'image/x-cmx': ['cmx'],
+    'image/x-freehand': ['fh', 'fhc', 'fh4', 'fh5', 'fh7'],
+    'image/x-icon': ['*ico'],
+    'image/x-jng': ['jng'],
+    'image/x-mrsid-image': ['sid'],
+    'image/x-ms-bmp': ['*bmp'],
+    'image/x-pcx': ['*pcx'],
+    'image/x-pict': ['pic', 'pct'],
+    'image/x-portable-anymap': ['pnm'],
+    'image/x-portable-bitmap': ['pbm'],
+    'image/x-portable-graymap': ['pgm'],
+    'image/x-portable-pixmap': ['ppm'],
+    'image/x-rgb': ['rgb'],
+    'image/x-tga': ['tga'],
+    'image/x-xbitmap': ['xbm'],
+    'image/x-xpixmap': ['xpm'],
+    'image/x-xwindowdump': ['xwd'],
+    'message/vnd.wfa.wsc': ['wsc'],
+    'model/vnd.bary': ['bary'],
+    'model/vnd.cld': ['cld'],
+    'model/vnd.collada+xml': ['dae'],
+    'model/vnd.dwf': ['dwf'],
+    'model/vnd.gdl': ['gdl'],
+    'model/vnd.gtw': ['gtw'],
+    'model/vnd.mts': ['*mts'],
+    'model/vnd.opengex': ['ogex'],
+    'model/vnd.parasolid.transmit.binary': ['x_b'],
+    'model/vnd.parasolid.transmit.text': ['x_t'],
+    'model/vnd.pytha.pyox': ['pyo', 'pyox'],
+    'model/vnd.sap.vds': ['vds'],
+    'model/vnd.usda': ['usda'],
+    'model/vnd.usdz+zip': ['usdz'],
+    'model/vnd.valve.source.compiled-map': ['bsp'],
+    'model/vnd.vtu': ['vtu'],
+    'text/prs.lines.tag': ['dsc'],
+    'text/vnd.curl': ['curl'],
+    'text/vnd.curl.dcurl': ['dcurl'],
+    'text/vnd.curl.mcurl': ['mcurl'],
+    'text/vnd.curl.scurl': ['scurl'],
+    'text/vnd.dvb.subtitle': ['sub'],
+    'text/vnd.familysearch.gedcom': ['ged'],
+    'text/vnd.fly': ['fly'],
+    'text/vnd.fmi.flexstor': ['flx'],
+    'text/vnd.graphviz': ['gv'],
+    'text/vnd.in3d.3dml': ['3dml'],
+    'text/vnd.in3d.spot': ['spot'],
+    'text/vnd.sun.j2me.app-descriptor': ['jad'],
+    'text/vnd.wap.wml': ['wml'],
+    'text/vnd.wap.wmlscript': ['wmls'],
+    'text/x-asm': ['s', 'asm'],
+    'text/x-c': ['c', 'cc', 'cxx', 'cpp', 'h', 'hh', 'dic'],
+    'text/x-component': ['htc'],
+    'text/x-fortran': ['f', 'for', 'f77', 'f90'],
+    'text/x-handlebars-template': ['hbs'],
+    'text/x-java-source': ['java'],
+    'text/x-lua': ['lua'],
+    'text/x-markdown': ['mkd'],
+    'text/x-nfo': ['nfo'],
+    'text/x-opml': ['opml'],
+    'text/x-org': ['*org'],
+    'text/x-pascal': ['p', 'pas'],
+    'text/x-processing': ['pde'],
+    'text/x-sass': ['sass'],
+    'text/x-scss': ['scss'],
+    'text/x-setext': ['etx'],
+    'text/x-sfv': ['sfv'],
+    'text/x-suse-ymp': ['ymp'],
+    'text/x-uuencode': ['uu'],
+    'text/x-vcalendar': ['vcs'],
+    'text/x-vcard': ['vcf'],
+    'video/vnd.dece.hd': ['uvh', 'uvvh'],
+    'video/vnd.dece.mobile': ['uvm', 'uvvm'],
+    'video/vnd.dece.pd': ['uvp', 'uvvp'],
+    'video/vnd.dece.sd': ['uvs', 'uvvs'],
+    'video/vnd.dece.video': ['uvv', 'uvvv'],
+    'video/vnd.dvb.file': ['dvb'],
+    'video/vnd.fvt': ['fvt'],
+    'video/vnd.mpegurl': ['mxu', 'm4u'],
+    'video/vnd.ms-playready.media.pyv': ['pyv'],
+    'video/vnd.uvvu.mp4': ['uvu', 'uvvu'],
+    'video/vnd.vivo': ['viv'],
+    'video/x-f4v': ['f4v'],
+    'video/x-fli': ['fli'],
+    'video/x-flv': ['flv'],
+    'video/x-m4v': ['m4v'],
+    'video/x-matroska': ['mkv', 'mk3d', 'mks'],
+    'video/x-mng': ['mng'],
+    'video/x-ms-asf': ['asf', 'asx'],
+    'video/x-ms-vob': ['vob'],
+    'video/x-ms-wm': ['wm'],
+    'video/x-ms-wmv': ['wmv'],
+    'video/x-ms-wmx': ['wmx'],
+    'video/x-ms-wvx': ['wvx'],
+    'video/x-msvideo': ['avi'],
+    'video/x-sgi-movie': ['movie'],
+    'video/x-smv': ['smv'],
+    'x-conference/x-cooltalk': ['ice'],
+};
 Object.freeze(types);
 /* harmony default export */ const other = (types);
-//# sourceMappingURL=other.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/mime/dist/types/standard.js
-const standard_types = { "application/andrew-inset": ["ez"], "application/appinstaller": ["appinstaller"], "application/applixware": ["aw"], "application/appx": ["appx"], "application/appxbundle": ["appxbundle"], "application/atom+xml": ["atom"], "application/atomcat+xml": ["atomcat"], "application/atomdeleted+xml": ["atomdeleted"], "application/atomsvc+xml": ["atomsvc"], "application/atsc-dwd+xml": ["dwd"], "application/atsc-held+xml": ["held"], "application/atsc-rsat+xml": ["rsat"], "application/automationml-aml+xml": ["aml"], "application/automationml-amlx+zip": ["amlx"], "application/bdoc": ["bdoc"], "application/calendar+xml": ["xcs"], "application/ccxml+xml": ["ccxml"], "application/cdfx+xml": ["cdfx"], "application/cdmi-capability": ["cdmia"], "application/cdmi-container": ["cdmic"], "application/cdmi-domain": ["cdmid"], "application/cdmi-object": ["cdmio"], "application/cdmi-queue": ["cdmiq"], "application/cpl+xml": ["cpl"], "application/cu-seeme": ["cu"], "application/cwl": ["cwl"], "application/dash+xml": ["mpd"], "application/dash-patch+xml": ["mpp"], "application/davmount+xml": ["davmount"], "application/docbook+xml": ["dbk"], "application/dssc+der": ["dssc"], "application/dssc+xml": ["xdssc"], "application/ecmascript": ["ecma"], "application/emma+xml": ["emma"], "application/emotionml+xml": ["emotionml"], "application/epub+zip": ["epub"], "application/exi": ["exi"], "application/express": ["exp"], "application/fdf": ["fdf"], "application/fdt+xml": ["fdt"], "application/font-tdpfr": ["pfr"], "application/geo+json": ["geojson"], "application/gml+xml": ["gml"], "application/gpx+xml": ["gpx"], "application/gxf": ["gxf"], "application/gzip": ["gz"], "application/hjson": ["hjson"], "application/hyperstudio": ["stk"], "application/inkml+xml": ["ink", "inkml"], "application/ipfix": ["ipfix"], "application/its+xml": ["its"], "application/java-archive": ["jar", "war", "ear"], "application/java-serialized-object": ["ser"], "application/java-vm": ["class"], "application/javascript": ["*js"], "application/json": ["json", "map"], "application/json5": ["json5"], "application/jsonml+json": ["jsonml"], "application/ld+json": ["jsonld"], "application/lgr+xml": ["lgr"], "application/lost+xml": ["lostxml"], "application/mac-binhex40": ["hqx"], "application/mac-compactpro": ["cpt"], "application/mads+xml": ["mads"], "application/manifest+json": ["webmanifest"], "application/marc": ["mrc"], "application/marcxml+xml": ["mrcx"], "application/mathematica": ["ma", "nb", "mb"], "application/mathml+xml": ["mathml"], "application/mbox": ["mbox"], "application/media-policy-dataset+xml": ["mpf"], "application/mediaservercontrol+xml": ["mscml"], "application/metalink+xml": ["metalink"], "application/metalink4+xml": ["meta4"], "application/mets+xml": ["mets"], "application/mmt-aei+xml": ["maei"], "application/mmt-usd+xml": ["musd"], "application/mods+xml": ["mods"], "application/mp21": ["m21", "mp21"], "application/mp4": ["*mp4", "*mpg4", "mp4s", "m4p"], "application/msix": ["msix"], "application/msixbundle": ["msixbundle"], "application/msword": ["doc", "dot"], "application/mxf": ["mxf"], "application/n-quads": ["nq"], "application/n-triples": ["nt"], "application/node": ["cjs"], "application/octet-stream": ["bin", "dms", "lrf", "mar", "so", "dist", "distz", "pkg", "bpk", "dump", "elc", "deploy", "exe", "dll", "deb", "dmg", "iso", "img", "msi", "msp", "msm", "buffer"], "application/oda": ["oda"], "application/oebps-package+xml": ["opf"], "application/ogg": ["ogx"], "application/omdoc+xml": ["omdoc"], "application/onenote": ["onetoc", "onetoc2", "onetmp", "onepkg"], "application/oxps": ["oxps"], "application/p2p-overlay+xml": ["relo"], "application/patch-ops-error+xml": ["xer"], "application/pdf": ["pdf"], "application/pgp-encrypted": ["pgp"], "application/pgp-keys": ["asc"], "application/pgp-signature": ["sig", "*asc"], "application/pics-rules": ["prf"], "application/pkcs10": ["p10"], "application/pkcs7-mime": ["p7m", "p7c"], "application/pkcs7-signature": ["p7s"], "application/pkcs8": ["p8"], "application/pkix-attr-cert": ["ac"], "application/pkix-cert": ["cer"], "application/pkix-crl": ["crl"], "application/pkix-pkipath": ["pkipath"], "application/pkixcmp": ["pki"], "application/pls+xml": ["pls"], "application/postscript": ["ai", "eps", "ps"], "application/provenance+xml": ["provx"], "application/pskc+xml": ["pskcxml"], "application/raml+yaml": ["raml"], "application/rdf+xml": ["rdf", "owl"], "application/reginfo+xml": ["rif"], "application/relax-ng-compact-syntax": ["rnc"], "application/resource-lists+xml": ["rl"], "application/resource-lists-diff+xml": ["rld"], "application/rls-services+xml": ["rs"], "application/route-apd+xml": ["rapd"], "application/route-s-tsid+xml": ["sls"], "application/route-usd+xml": ["rusd"], "application/rpki-ghostbusters": ["gbr"], "application/rpki-manifest": ["mft"], "application/rpki-roa": ["roa"], "application/rsd+xml": ["rsd"], "application/rss+xml": ["rss"], "application/rtf": ["rtf"], "application/sbml+xml": ["sbml"], "application/scvp-cv-request": ["scq"], "application/scvp-cv-response": ["scs"], "application/scvp-vp-request": ["spq"], "application/scvp-vp-response": ["spp"], "application/sdp": ["sdp"], "application/senml+xml": ["senmlx"], "application/sensml+xml": ["sensmlx"], "application/set-payment-initiation": ["setpay"], "application/set-registration-initiation": ["setreg"], "application/shf+xml": ["shf"], "application/sieve": ["siv", "sieve"], "application/smil+xml": ["smi", "smil"], "application/sparql-query": ["rq"], "application/sparql-results+xml": ["srx"], "application/sql": ["sql"], "application/srgs": ["gram"], "application/srgs+xml": ["grxml"], "application/sru+xml": ["sru"], "application/ssdl+xml": ["ssdl"], "application/ssml+xml": ["ssml"], "application/swid+xml": ["swidtag"], "application/tei+xml": ["tei", "teicorpus"], "application/thraud+xml": ["tfi"], "application/timestamped-data": ["tsd"], "application/toml": ["toml"], "application/trig": ["trig"], "application/ttml+xml": ["ttml"], "application/ubjson": ["ubj"], "application/urc-ressheet+xml": ["rsheet"], "application/urc-targetdesc+xml": ["td"], "application/voicexml+xml": ["vxml"], "application/wasm": ["wasm"], "application/watcherinfo+xml": ["wif"], "application/widget": ["wgt"], "application/winhlp": ["hlp"], "application/wsdl+xml": ["wsdl"], "application/wspolicy+xml": ["wspolicy"], "application/xaml+xml": ["xaml"], "application/xcap-att+xml": ["xav"], "application/xcap-caps+xml": ["xca"], "application/xcap-diff+xml": ["xdf"], "application/xcap-el+xml": ["xel"], "application/xcap-ns+xml": ["xns"], "application/xenc+xml": ["xenc"], "application/xfdf": ["xfdf"], "application/xhtml+xml": ["xhtml", "xht"], "application/xliff+xml": ["xlf"], "application/xml": ["xml", "xsl", "xsd", "rng"], "application/xml-dtd": ["dtd"], "application/xop+xml": ["xop"], "application/xproc+xml": ["xpl"], "application/xslt+xml": ["*xsl", "xslt"], "application/xspf+xml": ["xspf"], "application/xv+xml": ["mxml", "xhvml", "xvml", "xvm"], "application/yang": ["yang"], "application/yin+xml": ["yin"], "application/zip": ["zip"], "audio/3gpp": ["*3gpp"], "audio/aac": ["adts", "aac"], "audio/adpcm": ["adp"], "audio/amr": ["amr"], "audio/basic": ["au", "snd"], "audio/midi": ["mid", "midi", "kar", "rmi"], "audio/mobile-xmf": ["mxmf"], "audio/mp3": ["*mp3"], "audio/mp4": ["m4a", "mp4a"], "audio/mpeg": ["mpga", "mp2", "mp2a", "mp3", "m2a", "m3a"], "audio/ogg": ["oga", "ogg", "spx", "opus"], "audio/s3m": ["s3m"], "audio/silk": ["sil"], "audio/wav": ["wav"], "audio/wave": ["*wav"], "audio/webm": ["weba"], "audio/xm": ["xm"], "font/collection": ["ttc"], "font/otf": ["otf"], "font/ttf": ["ttf"], "font/woff": ["woff"], "font/woff2": ["woff2"], "image/aces": ["exr"], "image/apng": ["apng"], "image/avci": ["avci"], "image/avcs": ["avcs"], "image/avif": ["avif"], "image/bmp": ["bmp", "dib"], "image/cgm": ["cgm"], "image/dicom-rle": ["drle"], "image/dpx": ["dpx"], "image/emf": ["emf"], "image/fits": ["fits"], "image/g3fax": ["g3"], "image/gif": ["gif"], "image/heic": ["heic"], "image/heic-sequence": ["heics"], "image/heif": ["heif"], "image/heif-sequence": ["heifs"], "image/hej2k": ["hej2"], "image/hsj2": ["hsj2"], "image/ief": ["ief"], "image/jls": ["jls"], "image/jp2": ["jp2", "jpg2"], "image/jpeg": ["jpeg", "jpg", "jpe"], "image/jph": ["jph"], "image/jphc": ["jhc"], "image/jpm": ["jpm", "jpgm"], "image/jpx": ["jpx", "jpf"], "image/jxr": ["jxr"], "image/jxra": ["jxra"], "image/jxrs": ["jxrs"], "image/jxs": ["jxs"], "image/jxsc": ["jxsc"], "image/jxsi": ["jxsi"], "image/jxss": ["jxss"], "image/ktx": ["ktx"], "image/ktx2": ["ktx2"], "image/png": ["png"], "image/sgi": ["sgi"], "image/svg+xml": ["svg", "svgz"], "image/t38": ["t38"], "image/tiff": ["tif", "tiff"], "image/tiff-fx": ["tfx"], "image/webp": ["webp"], "image/wmf": ["wmf"], "message/disposition-notification": ["disposition-notification"], "message/global": ["u8msg"], "message/global-delivery-status": ["u8dsn"], "message/global-disposition-notification": ["u8mdn"], "message/global-headers": ["u8hdr"], "message/rfc822": ["eml", "mime"], "model/3mf": ["3mf"], "model/gltf+json": ["gltf"], "model/gltf-binary": ["glb"], "model/iges": ["igs", "iges"], "model/jt": ["jt"], "model/mesh": ["msh", "mesh", "silo"], "model/mtl": ["mtl"], "model/obj": ["obj"], "model/prc": ["prc"], "model/step+xml": ["stpx"], "model/step+zip": ["stpz"], "model/step-xml+zip": ["stpxz"], "model/stl": ["stl"], "model/u3d": ["u3d"], "model/vrml": ["wrl", "vrml"], "model/x3d+binary": ["*x3db", "x3dbz"], "model/x3d+fastinfoset": ["x3db"], "model/x3d+vrml": ["*x3dv", "x3dvz"], "model/x3d+xml": ["x3d", "x3dz"], "model/x3d-vrml": ["x3dv"], "text/cache-manifest": ["appcache", "manifest"], "text/calendar": ["ics", "ifb"], "text/coffeescript": ["coffee", "litcoffee"], "text/css": ["css"], "text/csv": ["csv"], "text/html": ["html", "htm", "shtml"], "text/jade": ["jade"], "text/javascript": ["js", "mjs"], "text/jsx": ["jsx"], "text/less": ["less"], "text/markdown": ["md", "markdown"], "text/mathml": ["mml"], "text/mdx": ["mdx"], "text/n3": ["n3"], "text/plain": ["txt", "text", "conf", "def", "list", "log", "in", "ini"], "text/richtext": ["rtx"], "text/rtf": ["*rtf"], "text/sgml": ["sgml", "sgm"], "text/shex": ["shex"], "text/slim": ["slim", "slm"], "text/spdx": ["spdx"], "text/stylus": ["stylus", "styl"], "text/tab-separated-values": ["tsv"], "text/troff": ["t", "tr", "roff", "man", "me", "ms"], "text/turtle": ["ttl"], "text/uri-list": ["uri", "uris", "urls"], "text/vcard": ["vcard"], "text/vtt": ["vtt"], "text/wgsl": ["wgsl"], "text/xml": ["*xml"], "text/yaml": ["yaml", "yml"], "video/3gpp": ["3gp", "3gpp"], "video/3gpp2": ["3g2"], "video/h261": ["h261"], "video/h263": ["h263"], "video/h264": ["h264"], "video/iso.segment": ["m4s"], "video/jpeg": ["jpgv"], "video/jpm": ["*jpm", "*jpgm"], "video/mj2": ["mj2", "mjp2"], "video/mp2t": ["ts"], "video/mp4": ["mp4", "mp4v", "mpg4"], "video/mpeg": ["mpeg", "mpg", "mpe", "m1v", "m2v"], "video/ogg": ["ogv"], "video/quicktime": ["qt", "mov"], "video/webm": ["webm"] };
+const standard_types = {
+    'application/andrew-inset': ['ez'],
+    'application/appinstaller': ['appinstaller'],
+    'application/applixware': ['aw'],
+    'application/appx': ['appx'],
+    'application/appxbundle': ['appxbundle'],
+    'application/atom+xml': ['atom'],
+    'application/atomcat+xml': ['atomcat'],
+    'application/atomdeleted+xml': ['atomdeleted'],
+    'application/atomsvc+xml': ['atomsvc'],
+    'application/atsc-dwd+xml': ['dwd'],
+    'application/atsc-held+xml': ['held'],
+    'application/atsc-rsat+xml': ['rsat'],
+    'application/automationml-aml+xml': ['aml'],
+    'application/automationml-amlx+zip': ['amlx'],
+    'application/bdoc': ['bdoc'],
+    'application/calendar+xml': ['xcs'],
+    'application/ccxml+xml': ['ccxml'],
+    'application/cdfx+xml': ['cdfx'],
+    'application/cdmi-capability': ['cdmia'],
+    'application/cdmi-container': ['cdmic'],
+    'application/cdmi-domain': ['cdmid'],
+    'application/cdmi-object': ['cdmio'],
+    'application/cdmi-queue': ['cdmiq'],
+    'application/cpl+xml': ['cpl'],
+    'application/cu-seeme': ['cu'],
+    'application/cwl': ['cwl'],
+    'application/dash+xml': ['mpd'],
+    'application/dash-patch+xml': ['mpp'],
+    'application/davmount+xml': ['davmount'],
+    'application/dicom': ['dcm'],
+    'application/docbook+xml': ['dbk'],
+    'application/dssc+der': ['dssc'],
+    'application/dssc+xml': ['xdssc'],
+    'application/ecmascript': ['ecma'],
+    'application/emma+xml': ['emma'],
+    'application/emotionml+xml': ['emotionml'],
+    'application/epub+zip': ['epub'],
+    'application/exi': ['exi'],
+    'application/express': ['exp'],
+    'application/fdf': ['fdf'],
+    'application/fdt+xml': ['fdt'],
+    'application/font-tdpfr': ['pfr'],
+    'application/geo+json': ['geojson'],
+    'application/gml+xml': ['gml'],
+    'application/gpx+xml': ['gpx'],
+    'application/gxf': ['gxf'],
+    'application/gzip': ['gz'],
+    'application/hjson': ['hjson'],
+    'application/hyperstudio': ['stk'],
+    'application/inkml+xml': ['ink', 'inkml'],
+    'application/ipfix': ['ipfix'],
+    'application/its+xml': ['its'],
+    'application/java-archive': ['jar', 'war', 'ear'],
+    'application/java-serialized-object': ['ser'],
+    'application/java-vm': ['class'],
+    'application/javascript': ['*js'],
+    'application/json': ['json', 'map'],
+    'application/json5': ['json5'],
+    'application/jsonml+json': ['jsonml'],
+    'application/ld+json': ['jsonld'],
+    'application/lgr+xml': ['lgr'],
+    'application/lost+xml': ['lostxml'],
+    'application/mac-binhex40': ['hqx'],
+    'application/mac-compactpro': ['cpt'],
+    'application/mads+xml': ['mads'],
+    'application/manifest+json': ['webmanifest'],
+    'application/marc': ['mrc'],
+    'application/marcxml+xml': ['mrcx'],
+    'application/mathematica': ['ma', 'nb', 'mb'],
+    'application/mathml+xml': ['mathml'],
+    'application/mbox': ['mbox'],
+    'application/media-policy-dataset+xml': ['mpf'],
+    'application/mediaservercontrol+xml': ['mscml'],
+    'application/metalink+xml': ['metalink'],
+    'application/metalink4+xml': ['meta4'],
+    'application/mets+xml': ['mets'],
+    'application/mmt-aei+xml': ['maei'],
+    'application/mmt-usd+xml': ['musd'],
+    'application/mods+xml': ['mods'],
+    'application/mp21': ['m21', 'mp21'],
+    'application/mp4': ['*mp4', '*mpg4', 'mp4s', 'm4p'],
+    'application/msix': ['msix'],
+    'application/msixbundle': ['msixbundle'],
+    'application/msword': ['doc', 'dot'],
+    'application/mxf': ['mxf'],
+    'application/n-quads': ['nq'],
+    'application/n-triples': ['nt'],
+    'application/node': ['cjs'],
+    'application/octet-stream': [
+        'bin',
+        'dms',
+        'lrf',
+        'mar',
+        'so',
+        'dist',
+        'distz',
+        'pkg',
+        'bpk',
+        'dump',
+        'elc',
+        'deploy',
+        'exe',
+        'dll',
+        'deb',
+        'dmg',
+        'iso',
+        'img',
+        'msi',
+        'msp',
+        'msm',
+        'buffer',
+    ],
+    'application/oda': ['oda'],
+    'application/oebps-package+xml': ['opf'],
+    'application/ogg': ['ogx'],
+    'application/omdoc+xml': ['omdoc'],
+    'application/onenote': [
+        'onetoc',
+        'onetoc2',
+        'onetmp',
+        'onepkg',
+        'one',
+        'onea',
+    ],
+    'application/oxps': ['oxps'],
+    'application/p2p-overlay+xml': ['relo'],
+    'application/patch-ops-error+xml': ['xer'],
+    'application/pdf': ['pdf'],
+    'application/pgp-encrypted': ['pgp'],
+    'application/pgp-keys': ['asc'],
+    'application/pgp-signature': ['sig', '*asc'],
+    'application/pics-rules': ['prf'],
+    'application/pkcs10': ['p10'],
+    'application/pkcs7-mime': ['p7m', 'p7c'],
+    'application/pkcs7-signature': ['p7s'],
+    'application/pkcs8': ['p8'],
+    'application/pkix-attr-cert': ['ac'],
+    'application/pkix-cert': ['cer'],
+    'application/pkix-crl': ['crl'],
+    'application/pkix-pkipath': ['pkipath'],
+    'application/pkixcmp': ['pki'],
+    'application/pls+xml': ['pls'],
+    'application/postscript': ['ai', 'eps', 'ps'],
+    'application/provenance+xml': ['provx'],
+    'application/pskc+xml': ['pskcxml'],
+    'application/raml+yaml': ['raml'],
+    'application/rdf+xml': ['rdf', 'owl'],
+    'application/reginfo+xml': ['rif'],
+    'application/relax-ng-compact-syntax': ['rnc'],
+    'application/resource-lists+xml': ['rl'],
+    'application/resource-lists-diff+xml': ['rld'],
+    'application/rls-services+xml': ['rs'],
+    'application/route-apd+xml': ['rapd'],
+    'application/route-s-tsid+xml': ['sls'],
+    'application/route-usd+xml': ['rusd'],
+    'application/rpki-ghostbusters': ['gbr'],
+    'application/rpki-manifest': ['mft'],
+    'application/rpki-roa': ['roa'],
+    'application/rsd+xml': ['rsd'],
+    'application/rss+xml': ['rss'],
+    'application/rtf': ['rtf'],
+    'application/sbml+xml': ['sbml'],
+    'application/scvp-cv-request': ['scq'],
+    'application/scvp-cv-response': ['scs'],
+    'application/scvp-vp-request': ['spq'],
+    'application/scvp-vp-response': ['spp'],
+    'application/sdp': ['sdp'],
+    'application/senml+xml': ['senmlx'],
+    'application/sensml+xml': ['sensmlx'],
+    'application/set-payment-initiation': ['setpay'],
+    'application/set-registration-initiation': ['setreg'],
+    'application/shf+xml': ['shf'],
+    'application/sieve': ['siv', 'sieve'],
+    'application/smil+xml': ['smi', 'smil'],
+    'application/sparql-query': ['rq'],
+    'application/sparql-results+xml': ['srx'],
+    'application/sql': ['sql'],
+    'application/srgs': ['gram'],
+    'application/srgs+xml': ['grxml'],
+    'application/sru+xml': ['sru'],
+    'application/ssdl+xml': ['ssdl'],
+    'application/ssml+xml': ['ssml'],
+    'application/swid+xml': ['swidtag'],
+    'application/tei+xml': ['tei', 'teicorpus'],
+    'application/thraud+xml': ['tfi'],
+    'application/timestamped-data': ['tsd'],
+    'application/toml': ['toml'],
+    'application/trig': ['trig'],
+    'application/ttml+xml': ['ttml'],
+    'application/ubjson': ['ubj'],
+    'application/urc-ressheet+xml': ['rsheet'],
+    'application/urc-targetdesc+xml': ['td'],
+    'application/voicexml+xml': ['vxml'],
+    'application/wasm': ['wasm'],
+    'application/watcherinfo+xml': ['wif'],
+    'application/widget': ['wgt'],
+    'application/winhlp': ['hlp'],
+    'application/wsdl+xml': ['wsdl'],
+    'application/wspolicy+xml': ['wspolicy'],
+    'application/xaml+xml': ['xaml'],
+    'application/xcap-att+xml': ['xav'],
+    'application/xcap-caps+xml': ['xca'],
+    'application/xcap-diff+xml': ['xdf'],
+    'application/xcap-el+xml': ['xel'],
+    'application/xcap-ns+xml': ['xns'],
+    'application/xenc+xml': ['xenc'],
+    'application/xfdf': ['xfdf'],
+    'application/xhtml+xml': ['xhtml', 'xht'],
+    'application/xliff+xml': ['xlf'],
+    'application/xml': ['xml', 'xsl', 'xsd', 'rng'],
+    'application/xml-dtd': ['dtd'],
+    'application/xop+xml': ['xop'],
+    'application/xproc+xml': ['xpl'],
+    'application/xslt+xml': ['*xsl', 'xslt'],
+    'application/xspf+xml': ['xspf'],
+    'application/xv+xml': ['mxml', 'xhvml', 'xvml', 'xvm'],
+    'application/yang': ['yang'],
+    'application/yin+xml': ['yin'],
+    'application/zip': ['zip'],
+    'application/zip+dotlottie': ['lottie'],
+    'audio/3gpp': ['*3gpp'],
+    'audio/aac': ['adts', 'aac'],
+    'audio/adpcm': ['adp'],
+    'audio/amr': ['amr'],
+    'audio/basic': ['au', 'snd'],
+    'audio/midi': ['mid', 'midi', 'kar', 'rmi'],
+    'audio/mobile-xmf': ['mxmf'],
+    'audio/mp3': ['*mp3'],
+    'audio/mp4': ['m4a', 'mp4a', 'm4b'],
+    'audio/mpeg': ['mpga', 'mp2', 'mp2a', 'mp3', 'm2a', 'm3a'],
+    'audio/ogg': ['oga', 'ogg', 'spx', 'opus'],
+    'audio/s3m': ['s3m'],
+    'audio/silk': ['sil'],
+    'audio/wav': ['wav'],
+    'audio/wave': ['*wav'],
+    'audio/webm': ['weba'],
+    'audio/xm': ['xm'],
+    'font/collection': ['ttc'],
+    'font/otf': ['otf'],
+    'font/ttf': ['ttf'],
+    'font/woff': ['woff'],
+    'font/woff2': ['woff2'],
+    'image/aces': ['exr'],
+    'image/apng': ['apng'],
+    'image/avci': ['avci'],
+    'image/avcs': ['avcs'],
+    'image/avif': ['avif'],
+    'image/bmp': ['bmp', 'dib'],
+    'image/cgm': ['cgm'],
+    'image/dicom-rle': ['drle'],
+    'image/dpx': ['dpx'],
+    'image/emf': ['emf'],
+    'image/fits': ['fits'],
+    'image/g3fax': ['g3'],
+    'image/gif': ['gif'],
+    'image/heic': ['heic'],
+    'image/heic-sequence': ['heics'],
+    'image/heif': ['heif'],
+    'image/heif-sequence': ['heifs'],
+    'image/hej2k': ['hej2'],
+    'image/ief': ['ief'],
+    'image/jaii': ['jaii'],
+    'image/jais': ['jais'],
+    'image/jls': ['jls'],
+    'image/jp2': ['jp2', 'jpg2'],
+    'image/jpeg': ['jpg', 'jpeg', 'jpe'],
+    'image/jph': ['jph'],
+    'image/jphc': ['jhc'],
+    'image/jpm': ['jpm', 'jpgm'],
+    'image/jpx': ['jpx', 'jpf'],
+    'image/jxl': ['jxl'],
+    'image/jxr': ['jxr'],
+    'image/jxra': ['jxra'],
+    'image/jxrs': ['jxrs'],
+    'image/jxs': ['jxs'],
+    'image/jxsc': ['jxsc'],
+    'image/jxsi': ['jxsi'],
+    'image/jxss': ['jxss'],
+    'image/ktx': ['ktx'],
+    'image/ktx2': ['ktx2'],
+    'image/pjpeg': ['jfif'],
+    'image/png': ['png'],
+    'image/sgi': ['sgi'],
+    'image/svg+xml': ['svg', 'svgz'],
+    'image/t38': ['t38'],
+    'image/tiff': ['tif', 'tiff'],
+    'image/tiff-fx': ['tfx'],
+    'image/webp': ['webp'],
+    'image/wmf': ['wmf'],
+    'message/disposition-notification': ['disposition-notification'],
+    'message/global': ['u8msg'],
+    'message/global-delivery-status': ['u8dsn'],
+    'message/global-disposition-notification': ['u8mdn'],
+    'message/global-headers': ['u8hdr'],
+    'message/rfc822': ['eml', 'mime', 'mht', 'mhtml'],
+    'model/3mf': ['3mf'],
+    'model/gltf+json': ['gltf'],
+    'model/gltf-binary': ['glb'],
+    'model/iges': ['igs', 'iges'],
+    'model/jt': ['jt'],
+    'model/mesh': ['msh', 'mesh', 'silo'],
+    'model/mtl': ['mtl'],
+    'model/obj': ['obj'],
+    'model/prc': ['prc'],
+    'model/step': ['step', 'stp', 'stpnc', 'p21', '210'],
+    'model/step+xml': ['stpx'],
+    'model/step+zip': ['stpz'],
+    'model/step-xml+zip': ['stpxz'],
+    'model/stl': ['stl'],
+    'model/u3d': ['u3d'],
+    'model/vrml': ['wrl', 'vrml'],
+    'model/x3d+binary': ['*x3db', 'x3dbz'],
+    'model/x3d+fastinfoset': ['x3db'],
+    'model/x3d+vrml': ['*x3dv', 'x3dvz'],
+    'model/x3d+xml': ['x3d', 'x3dz'],
+    'model/x3d-vrml': ['x3dv'],
+    'text/cache-manifest': ['appcache', 'manifest'],
+    'text/calendar': ['ics', 'ifb'],
+    'text/coffeescript': ['coffee', 'litcoffee'],
+    'text/css': ['css'],
+    'text/csv': ['csv'],
+    'text/html': ['html', 'htm', 'shtml'],
+    'text/jade': ['jade'],
+    'text/javascript': ['js', 'mjs'],
+    'text/jsx': ['jsx'],
+    'text/less': ['less'],
+    'text/markdown': ['md', 'markdown'],
+    'text/mathml': ['mml'],
+    'text/mdx': ['mdx'],
+    'text/n3': ['n3'],
+    'text/plain': ['txt', 'text', 'conf', 'def', 'list', 'log', 'in', 'ini'],
+    'text/richtext': ['rtx'],
+    'text/rtf': ['*rtf'],
+    'text/sgml': ['sgml', 'sgm'],
+    'text/shex': ['shex'],
+    'text/slim': ['slim', 'slm'],
+    'text/spdx': ['spdx'],
+    'text/stylus': ['stylus', 'styl'],
+    'text/tab-separated-values': ['tsv'],
+    'text/troff': ['t', 'tr', 'roff', 'man', 'me', 'ms'],
+    'text/turtle': ['ttl'],
+    'text/uri-list': ['uri', 'uris', 'urls'],
+    'text/vcard': ['vcard'],
+    'text/vtt': ['vtt'],
+    'text/wgsl': ['wgsl'],
+    'text/xml': ['*xml'],
+    'text/yaml': ['yaml', 'yml'],
+    'video/3gpp': ['3gp', '3gpp'],
+    'video/3gpp2': ['3g2'],
+    'video/h261': ['h261'],
+    'video/h263': ['h263'],
+    'video/h264': ['h264'],
+    'video/iso.segment': ['m4s'],
+    'video/jpeg': ['jpgv'],
+    'video/jpm': ['*jpm', '*jpgm'],
+    'video/mj2': ['mj2', 'mjp2'],
+    'video/mp2t': ['ts', 'm2t', 'm2ts', 'mts'],
+    'video/mp4': ['mp4', 'mp4v', 'mpg4'],
+    'video/mpeg': ['mpeg', 'mpg', 'mpe', 'm1v', 'm2v'],
+    'video/ogg': ['ogv'],
+    'video/quicktime': ['qt', 'mov'],
+    'video/webm': ['webm'],
+};
 Object.freeze(standard_types);
 /* harmony default export */ const standard = (standard_types);
-//# sourceMappingURL=standard.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/mime/dist/src/Mime.js
 var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
@@ -32957,8 +34641,8 @@ class Mime {
     getType(path) {
         if (typeof path !== 'string')
             return null;
-        const last = path.replace(/^.*[/\\]/, '').toLowerCase();
-        const ext = last.replace(/^.*\./, '').toLowerCase();
+        const last = path.replace(/^.*[/\\]/s, '').toLowerCase();
+        const ext = last.replace(/^.*\./s, '').toLowerCase();
         const hasPath = last.length < path.length;
         const hasDot = ext.length < last.length - 1;
         if (!hasDot && hasPath)
@@ -32995,14 +34679,14 @@ class Mime {
 }
 _Mime_extensionToType = new WeakMap(), _Mime_typeToExtension = new WeakMap(), _Mime_typeToExtensions = new WeakMap();
 /* harmony default export */ const src_Mime = (Mime);
-//# sourceMappingURL=Mime.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/mime/dist/src/index.js
 
 
 
 
 /* harmony default export */ const src = (new src_Mime(standard, other)._freeze());
-//# sourceMappingURL=index.js.map
+
 
 /***/ })
 
